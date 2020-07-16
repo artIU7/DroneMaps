@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Bottom Sheet View Controller-->
+        <scene sceneID="RSs-Mf-Zvr">
+            <objects>
+                <viewController storyboardIdentifier="BottomSheet" id="apM-fK-stg" customClass="BottomSheetViewController" customModule="ECO_" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6o0-Cq-W20"/>
+                        <viewControllerLayoutGuide type="bottom" id="FM8-IJ-CZq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZLT-Ur-KcR" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwY-Ls-EbU">
+                                <rect key="frame" x="21" y="20" width="64" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="poly_icon.png"/>
+                                <connections>
+                                    <action selector="setPosition:" destination="apM-fK-stg" eventType="touchUpInside" id="sos-vM-mcJ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="349-RT-8oL">
+                                <rect key="frame" x="21" y="87" width="64" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="route_x.png"/>
+                                <connections>
+                                    <action selector="drawShape:" destination="apM-fK-stg" eventType="touchUpInside" id="cEe-QW-LkN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ehl-sv-icU">
+                                <rect key="frame" x="21" y="160" width="64" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="way-x.png"/>
+                                <connections>
+                                    <action selector="drawCircle:" destination="apM-fK-stg" eventType="touchUpInside" id="W6Q-c3-vtC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xHJ-sf-dt9">
+                                <rect key="frame" x="21" y="227" width="64" height="59"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="AR">
+                                    <color key="titleShadowColor" systemColor="systemYellowColor" red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="JY2-Bg-g4y" kind="show" id="RmT-gl-Gnd"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="0.45000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOffsetWidth">
+                                <integer key="value" value="0"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <connections>
+                        <outlet property="chekcButton" destination="349-RT-8oL" id="vj1-y5-qaZ"/>
+                        <outlet property="viewSheet" destination="ZLT-Ur-KcR" id="cml-GY-gOa"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZBd-xA-bjZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="604" y="150.67466266866569"/>
+        </scene>
+        <!--ARScene-->
+        <scene sceneID="vXI-Nb-XCQ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="ARScene" id="JY2-Bg-g4y" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="orP-zJ-vkM"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Xw-sC-5ZW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1398" y="-191"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="poly_icon.png" width="40" height="40"/>
+        <image name="route_x.png" width="40" height="40"/>
+        <image name="way-x.png" width="27" height="26"/>
+    </resources>
+</document>
