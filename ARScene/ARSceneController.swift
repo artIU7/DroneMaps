@@ -51,6 +51,8 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var BearingValue: UILabel!
     @IBOutlet weak var isBearing: UILabel!
     @IBOutlet weak var isDirection: UILabel!
+    // uiSwitch
+    @IBOutlet weak var startDrawAR: UISwitch!
     // drone object
     var parrotNode: SCNNode!
     var roterNode: SCNNode!
@@ -107,13 +109,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         self.dismiss(animated: true, completion: nil)
         print("Dismiss")
     }
-    @IBAction func startAutoUpdate(_ sender: Any) {
-        self.deinitDetection()
-        self.trackingTimerARStart()
-    }
-    @IBAction func stopAutoUpdate(_ sender: Any) {
-        self.trackingTimerARStop()
-    }
+   
       // start show object
     @IBAction func startShowARobject(_ sender: Any) {
         self.addObjectAR()
@@ -128,6 +124,14 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     }
     @IBAction func camera(_ sender: Any) {
         statusMode = "state 3"
+    }
+    @IBAction func startDrawARState (_ sender: Any) {
+        if startDrawAR.isOn {
+            self.deinitDetection()
+            self.trackingTimerARStart()
+        } else {
+            self.trackingTimerARStop()
+        }
     }
     /// MARK 3 @objc func
     @objc func addObjectAR() {
