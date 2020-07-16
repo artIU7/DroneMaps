@@ -473,7 +473,16 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
             self.DrawZone.isHidden = true
             self.typeDrawZone.isHidden = false
         }
-/// MARK Methods Section
+    
+        @IBAction func drawOffsetPoint(_ sender: Any) {
+            let pointXColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+            let pointYColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            self.createCircle(geoCoord: testXPoint!, color: pointXColor, rad: Int(1.5))
+            for point in arrayColisionPoint {
+                self.createCircle(geoCoord: point, color: pointYColor, rad: Int(1.5))
+            }
+        }
+    /// MARK Methods Section
     // methods corelocation 1
     func initCoreLocation() {
         locationManager.delegate = self

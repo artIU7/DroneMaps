@@ -85,6 +85,7 @@ class DroneZone: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         arrayARObject.removeAll()
+        arrayColisionPoint.removeAll()
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         let user = users[indexPath.row]

@@ -24,6 +24,11 @@ import Foundation
     var arrayVector = [SCNVector3]()
     var printDiff = [String:[Double]]()
     var arrayoffset = [Double]()
+    // propertys for check point
+    var pointXColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+    var testXPoint : NMAGeoCoordinates?
+    var testYPoint : NMAGeoCoordinates?
+    var arrayColisionPoint = [NMAGeoCoordinates]()
 
 
 class ARSceneController: UIViewController, ARSCNViewDelegate {
@@ -199,6 +204,10 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
         sceneView.removeFromSuperview()
         sceneView = nil
+        pointXColor =  #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
+        DispatchQueue.global(qos: .background).async {
+           
+        }
         print("running viewWillDisappear ============================")
     }
 }
@@ -245,6 +254,7 @@ extension ARSceneController {
 extension ARSceneController {
     
     func painItemAR(_ posDraw : NMAGeoCoordinates?,_ index : Int) {
+            self.changeCurrentPosition()
             let currentPosScene = getPositionInScene()
             if  currentPosMap == nil {
                 currentPosMap = manualPosition//getPositionInMap()
@@ -308,10 +318,17 @@ extension ARSceneController {
             let pointXColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
             let defX = 360/(2*Double.pi*6378.137*cos(pointStart.latitude*toRadian))
             let defY = 360/(2*Double.pi * 6378.137)
-            let testX = NMAGeoCoordinates(
-                latitude: pointStart.latitude + (pointEnd.latitude - pointStart.latitude),
-                longitude: pointStart.longitude + (pointEnd.longitude - pointStart.longitude))
-            print("new coord : [\(testX)]")
+            //
+            testXPoint = bridge.firstGeoTask(pointStart, deltaX, 0)
+            //
+            testYPoint = bridge.firstGeoTask(pointEnd, deltaX, deltaZ)
+            arrayColisionPoint.append(testYPoint!)
+            //
+            /*testXPoint = NMAGeoCoordinates(
+                latitude: pointStart.latitude/*+ (pointEnd.latitude - pointStart.latitude)*/,
+                longitude: pointStart.longitude/* + (pointEnd.longitude - pointStart.longitude)*/) */
+            // test add compute point
+            print("new coord : [\(testXPoint)]")
             print("end coord : [\(pointEnd)]")
                                     }
                                 }
