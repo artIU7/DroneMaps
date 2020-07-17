@@ -307,6 +307,10 @@ extension ARSceneController {
                     if pointEnd != nil {
                         deltaX = (pointEnd.longitude - pointStart.longitude)*defLot*1000//*toDegress
                         deltaZ = (pointEnd.latitude - pointStart.latitude)*defLat*1000//*toDegress
+                        
+                        var lon = (pointStart.longitude*defLot/*1000*/ + deltaX)/defLot/*1000*///*toDegress
+                        var lat = (pointStart.latitude*defLat + deltaZ)/defLat//*toDegress
+                        //
                          //   if deltaZ < 0 {
                           //     // deltaZ = -deltaZ}
                          //   else {
@@ -319,9 +323,9 @@ extension ARSceneController {
             let defX = 360/(2*Double.pi*6378.137*cos(pointStart.latitude*toRadian))
             let defY = 360/(2*Double.pi * 6378.137)
             //
-            testXPoint = bridge.firstGeoTask(pointStart, deltaX, 0)
+            testXPoint = pointStart//bridge.firstGeoTask(pointStart, deltaX, 0)
             //
-            testYPoint = bridge.firstGeoTask(pointEnd, deltaX, deltaZ)
+            testYPoint = NMAGeoCoordinates(latitude: lat, longitude: lon)//bridge.firstGeoTask(pointEnd, deltaZ, deltaX)
             arrayColisionPoint.append(testYPoint!)
             //
             /*testXPoint = NMAGeoCoordinates(
