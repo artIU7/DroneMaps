@@ -149,7 +149,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         if arrayARObject.count > 0 {
             self.reset()
         //  draw
-        //    arrayVector.append(SCNVector3(0, 0, 0))
+            arrayVector.append(SCNVector3(0, 0 - Float(groundHeight), 0))
             for object in arrayARObject {
                 painItemAR(object,index)
                 index += 1
@@ -237,12 +237,14 @@ extension ARSceneController {
     }
   /// MARK 4  posInMap
     func getPositionInMap() -> NMAGeoCoordinates! {
-        let pos = NMAPositioningManager.sharedInstance().currentPosition
+        var pos = NMAPositioningManager.sharedInstance().currentPosition
         let cord = pos?.coordinates
         let lat = cord?.latitude
         let lon = cord?.longitude
+        let alt = 0.0//cord?.altitude
+        let geoPos = NMAGeoCoordinates(latitude: lat!, longitude: lon!, altitude: Float(alt))
         self.geoPosition.text = "geo pos: - \(lat!) : \(lon!)"
-        return pos?.coordinates
+        return geoPos
     }
  /// MARK 5 updatePositionManual
     func changeCurrentPosition() {
@@ -323,9 +325,9 @@ extension ARSceneController {
             let defX = 360/(2*Double.pi*6378.137*cos(pointStart.latitude*toRadian))
             let defY = 360/(2*Double.pi * 6378.137)
             //
-            testXPoint = pointStart//bridge.firstGeoTask(pointStart, deltaX, 0)
+            testXPoint =  pointStart//bridge.firstGeoTask(pointStart, deltaX, 0)
             //
-            testYPoint = NMAGeoCoordinates(latitude: lat, longitude: lon)//bridge.firstGeoTask(pointEnd, deltaZ, deltaX)
+            testYPoint = self.findPointOffset(pointStart, deltaZ, deltaX)//NMAGeoCoordinates(latitude: lat, longitude: lon)//bridge.firstGeoTask(pointEnd, deltaZ, deltaX)
             arrayColisionPoint.append(testYPoint!)
             //
             /*testXPoint = NMAGeoCoordinates(
@@ -339,6 +341,13 @@ extension ARSceneController {
             offset.append(deltaX)
             offset.append(deltaZ)
         return offset
+    }
+        func findPointOffset(_ startPoint : NMAGeoCoordinates, _ deltaX : Double , _ deltaY : Double) -> NMAGeoCoordinates {
+            let R = 6378.137
+            var dLat = deltaX/1000/R
+            var dLon = deltaY/1000/(R * cos(Double.pi * startPoint.latitude/180))
+            return NMAGeoCoordinates(latitude: startPoint.latitude + dLat * 180/Double.pi,
+                                     longitude: startPoint.longitude + dLon * 180/Double.pi)
     }
      // reset
         func reset() {

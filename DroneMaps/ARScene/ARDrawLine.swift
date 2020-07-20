@@ -88,7 +88,7 @@ init(startingVector vectorA: GLKVector3, endingVector vectorB: GLKVector3) {
     //5. Create An SCNCyclinder Geometry To Act As Our Line
     let cylinder = SCNCylinder(radius: 0.5, height: height)
     let material = SCNMaterial()
-    let color_route = #colorLiteral(red: 0.09757640666, green: 0.05916619789, blue: 0.3780359456, alpha: 1)
+    let color_route = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
     material.diffuse.contents = color_route//UIColor.white
     /*cylinder.materials = [material]
     cylinder.firstMaterial?.diffuse.contents = UIColor.white
@@ -162,6 +162,7 @@ extension ARSceneController {
           //2. Draw A Line Between The Nodes
           let line = MeasuringLineNode(startingVector: nodeAVector3 , endingVector: nodeBVector3)
           line.name = "routeAR"
+          line.nodeAnimation(line)
           self.sceneView.scene.rootNode.addChildNode(line)
     }
     // add line beetween two position point
