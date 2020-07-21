@@ -47,10 +47,10 @@ extension SCNNode {
         animationGroup.repeatCount = .infinity
         let opacityAnimation = CABasicAnimation(keyPath: "opacity")
         opacityAnimation.fromValue = NSNumber(value: 1.0)
-        opacityAnimation.toValue = NSNumber(value: 0.1)
+        opacityAnimation.toValue = NSNumber(value: 0.5)
         let scaleAnimation = CABasicAnimation(keyPath: "scale")
         scaleAnimation.fromValue = NSValue(scnVector3: SCNVector3(1.0, 1.0, 1.0))
-        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(1, 3, 1))
+        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(3, 1, 1))
         animationGroup.animations = [opacityAnimation, scaleAnimation]
         nodeAnimation.addAnimation(animationGroup, forKey: "animations")
     }
