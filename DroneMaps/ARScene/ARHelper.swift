@@ -25,6 +25,7 @@ extension SCNGeometry {
         let element = SCNGeometryElement(indices: indices, primitiveType: .line)
         return SCNGeometry(sources: [source], elements: [element])
     }
+   
 }
 extension SCNNode {
   public class func allNodes(from file: String) -> [SCNNode] {
@@ -50,7 +51,7 @@ extension SCNNode {
         opacityAnimation.toValue = NSNumber(value: 0.5)
         let scaleAnimation = CABasicAnimation(keyPath: "scale")
         scaleAnimation.fromValue = NSValue(scnVector3: SCNVector3(1.0, 1.0, 1.0))
-        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(3, 1, 1))
+        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(1, 1, 1))
         animationGroup.animations = [opacityAnimation, scaleAnimation]
         nodeAnimation.addAnimation(animationGroup, forKey: "animations")
     }

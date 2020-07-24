@@ -370,5 +370,32 @@ extension ARSceneController {
             sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors]) */
             }
 
+    class ARSCNArrowGeometry: SCNGeometry {
+        convenience init(material: SCNMaterial) {
+            let vertices: [SCNVector3] = [
+                SCNVector3Make(-0.02,  0.00,  0.00), // 0
+                SCNVector3Make(-0.02,  0.50, -0.33), // 1
+                SCNVector3Make(-0.10,  0.44, -0.50), // 2
+                SCNVector3Make(-0.22,  0.00, -0.39), // 3
+                SCNVector3Make(-0.10, -0.44, -0.50), // 4
+                SCNVector3Make(-0.02, -0.50, -0.33), // 5
+                SCNVector3Make( 0.02,  0.00,  0.00), // 6
+                SCNVector3Make( 0.02,  0.50, -0.33), // 7
+                SCNVector3Make( 0.10,  0.44, -0.50), // 8
+                SCNVector3Make( 0.22,  0.00, -0.39), // 9
+                SCNVector3Make( 0.10, -0.44, -0.50), // 10
+                SCNVector3Make( 0.02, -0.50, -0.33), // 11
+            ]
+            let sources: [SCNGeometrySource] = [SCNGeometrySource(vertices: vertices)]
+            let indices: [Int32] = [0,3,5, 3,4,5, 1,2,3, 0,1,3, 10,9,11, 6,11,9, 6,9,7, 9,8,7,
+                                    6,5,11, 6,0,5, 6,1,0, 6,7,1, 11,5,4, 11,4,10, 9,4,3, 9,10,4, 9,3,2, 9,2,8, 8,2,1, 8,1,7]
+            let geometryElements = [SCNGeometryElement(indices: indices, primitiveType: .triangles)]
+            self.init(sources: sources, elements: geometryElements)
+            self.materials = [material]
+        }
+    }
+
+  
+    
 }
 

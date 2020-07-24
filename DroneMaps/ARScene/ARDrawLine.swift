@@ -162,7 +162,7 @@ extension ARSceneController {
           //2. Draw A Line Between The Nodes
           let line = MeasuringLineNode(startingVector: nodeAVector3 , endingVector: nodeBVector3)
           line.name = "routeAR"
-          line.nodeAnimation(line)
+          //line.nodeAnimation(line)
           self.sceneView.scene.rootNode.addChildNode(line)
     }
     // add line beetween two position point
