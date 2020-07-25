@@ -55,5 +55,36 @@ extension ARSceneController {
            parrotNode.position = SCNVector3(parrotNode.position.x + 0.05,parrotNode.position.y + 0.005,parrotNode.position.z + 0)
            print("Drone position ::\(parrotNode.position)")
        }
+    // add arrow
+    /// MARK 0 load drone model
+       func arrowLoadMesh(_ endRoute : SCNVector3) {
+               let arrowScene = SCNScene(named: "art.scnassets/Model/Down_Arrow_Animated.scn")! // "Focus_mocus"
+               allowNode = arrowScene.rootNode.childNode(withName: "Meshes",
+                                                          recursively: false)! // "main"
+               allowNode.scale = SCNVector3(0.8, 0.8, 0.8)
+               allowNode.position = endRoute
+               sceneView.scene.rootNode.addChildNode(allowNode)
+               print("Init : add object - Allow") // Focusw
+               // load roter drones
+               /*roterNode = parrotNode.childNode(withName: "GeometryDrone",
+                                                recursively: false)!.childNode(withName: "roter",
+                                                                               recursively: false)! */
+              
+               //focusNode.childNode(withName: "GeometryDrone", recursively: false)!.childNode(withName: "Propeller", recursively: false)!
+             /*
+           // add animation roter
+               let rotationAnimation = CABasicAnimation(keyPath: "move")
+               // Animate one complete revolution around the node's Y axis.
+               rotationAnimation.toValue = SCNVector4Make(0, 0, 1, Float(3.14*2) * 30.0)
+               rotationAnimation.duration = 10.0 // One revolution in ten seconds.
+               rotationAnimation.repeatCount = 100 // Repeat the animation forever.
+               //parrotNode.addAnimation(rotationAnimation, forKey: "move")
+           // root 2
+                let rotate = SCNAction.rotateBy(x: 0, y: 1, z: 0, duration: 0.5)
+                let moveSequence = SCNAction.sequence([rotate])
+                let moveLoop = SCNAction.repeatForever(moveSequence)
+                parrotNode.runAction(moveLoop) */
+         //self.focusNode.position = SCNVector3((sceneView.pointOfView?.position.x)! + 0.5, (sceneView.pointOfView?.position.y)! + 0.5, (sceneView.pointOfView?.position.z)! + 0.5)//SCNVector3(x: t.columns.3.x,y: t.columns.3.y, z: t.columns.3.z)
+       }
 }
 

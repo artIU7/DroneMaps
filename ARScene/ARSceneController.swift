@@ -62,6 +62,8 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     var parrotNode: SCNNode!
     var roterNode: SCNNode!
     var propellerNode : SCNNode!
+    /// MARK arrow set propertys
+    var allowNode : SCNNode!
     //
     var planePoint : CGPoint!
     var groundHeight : CGFloat! = 0.0
@@ -75,6 +77,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         // Create a session configuration
         configuration.worldAlignment = .gravityAndHeading
         self.initDetection()
+       
      // self.loadModels()
      // self.addPlane()
      // self.trackingTimerAR()
@@ -138,6 +141,10 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
             self.trackingTimerARStop()
         }
     }
+    func addAllow() {
+        let delta = offsetComplete(currentPosMap!, arrayARObject.last!)
+        self.arrowLoadMesh(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1))
+    }
     /// MARK 3 @objc func
     @objc func addObjectAR() {
         /// mark update drone
@@ -166,6 +173,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         }
         print(printDiff)
         print(arrayoffset)
+        self.addAllow()
 }
     @objc func dragObject(sender: UIPanGestureRecognizer) {
       if(movingNow){
