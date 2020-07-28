@@ -64,6 +64,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     var propellerNode : SCNNode!
     /// MARK arrow set propertys
     var allowNode : SCNNode!
+    var infoNode : SCNNode!
     //
     var planePoint : CGPoint!
     var groundHeight : CGFloat! = 0.0
@@ -77,12 +78,14 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         // Create a session configuration
         configuration.worldAlignment = .gravityAndHeading
         self.initDetection()
-       
-     // self.loadModels()
-     // self.addPlane()
-     // self.trackingTimerAR()
+        // self.loadModels()
+        self.addPlane(content: arImage, place: SCNVector3(10, -5, 0))
+        self.addPlane(content: googleImage, place: SCNVector3(10, 5, 0))
+        // self.trackingTimerAR()
         // Set the view's delegate
-     // sceneView.delegate = self
+        // sceneView.delegate = self
+        self.initTap()
+        //self.addInfo()
         print("running vieDidLoad ============================")
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -145,6 +148,14 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         let delta = offsetComplete(currentPosMap!, arrayARObject.last!)
         self.arrowLoadMesh(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1))
     }
+    func addInfo(object : NMAGeoCoordinates, name : String) {
+        if currentPosMap != nil {
+            let delta = offsetComplete(currentPosMap!, object)
+            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1),name: name)
+        } else {
+            self.changeCurrentPosition()
+        }
+    }
     /// MARK 3 @objc func
     @objc func addObjectAR() {
         /// mark update drone
@@ -158,7 +169,8 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         //  draw
             arrayVector.append(SCNVector3(0, 0 - Float(groundHeight), 0))
             for object in arrayARObject {
-                painItemAR(object,index)
+             //   painItemAR(object,index)
+                self.addInfo(object : object, name: "tapIndex\(index)")
                 index += 1
             }
             if arrayVector.count > 1 {
@@ -166,14 +178,14 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
                 self.segmentRoute.text = "route seg : \(String(describing: size - 1))"
                 for i in 0...size - 1 {
                 if i != size - 1{
-                    draw3DLine(arrayVector[i], arrayVector[i+1])
+            //        draw3DLine(arrayVector[i], arrayVector[i+1])
                     }
                 }
             }
         }
         print(printDiff)
         print(arrayoffset)
-        self.addAllow()
+        //self.addAllow()
 }
     @objc func dragObject(sender: UIPanGestureRecognizer) {
       if(movingNow){
@@ -217,6 +229,25 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
            
         }
         print("running viewWillDisappear ============================")
+    }
+
+     func initTap() {
+         let tapRec = UITapGestureRecognizer(target: self,
+                                             action: #selector(ARSceneController.handleTap(rec:)))
+         tapRec.numberOfTouchesRequired = 1
+         self.sceneView.addGestureRecognizer(tapRec)
+    }
+     @objc func handleTap(rec: UITapGestureRecognizer){
+        if rec.state == .ended {
+            let location: CGPoint = rec.location(in: sceneView)
+            let hits = self.sceneView.hitTest(location, options: nil)
+            if let tappednode = hits.first?.node {
+                
+                print("Tap name ++++++++++++++++++++++++++\(tappednode.name)")
+                print(tappednode.position)
+                //do something with tapped object
+            }
+        }
     }
 }
 
@@ -402,8 +433,4 @@ extension ARSceneController {
             self.materials = [material]
         }
     }
-
-  
-    
 }
-

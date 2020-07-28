@@ -12,6 +12,7 @@ import NMAKit
 var users = [User]()
 var ctr = [area]()
 var arImage = UIImage()
+var googleImage = UIImage()
 //https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=JdbJa6yZk5MljMzUe9bUO8X8FpHsF02J7UdmHY6hoKs&i&c=55.79109113663435,38.43966736458242&h=400&w=500&r=50
 extension ViewController {
     // post
@@ -57,6 +58,25 @@ extension ViewController {
                    }
                }.resume()
     }
+    //https://api.живуспортом.рф/imagecache/size1024_jpeg/place_image/45/44707/5cd2cd3af276b.jpeg
+    func getImageGoogle(url : String) {
+          var image = UIImage()
+          guard let url = URL(string: url) else {return}
+                 let session = URLSession.shared
+                 session.dataTask(with: url) { (data,response,error) in
+                     if let response = response {
+                         print(response)
+                     }
+                     guard let data = data else {return}
+                     do {
+                      image = UIImage(data: data)!
+                      googleImage = image
+                      print(image.description)
+                     } catch {
+                         print(error)
+                     }
+                 }.resume()
+      }
     // get location
     func get(url : String/*,parametrs : [String:Any]*/) {
         guard let url = URL(string: url) else {return}

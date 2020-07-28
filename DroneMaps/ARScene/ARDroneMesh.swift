@@ -86,5 +86,16 @@ extension ARSceneController {
                 parrotNode.runAction(moveLoop) */
          //self.focusNode.position = SCNVector3((sceneView.pointOfView?.position.x)! + 0.5, (sceneView.pointOfView?.position.y)! + 0.5, (sceneView.pointOfView?.position.z)! + 0.5)//SCNVector3(x: t.columns.3.x,y: t.columns.3.y, z: t.columns.3.z)
        }
+    /// MARK 0 load drone model
+    func ringCheck(_ endRoute : SCNVector3,name : String) {
+            let arrowScene = SCNScene(named: "art.scnassets/Model/RingCheck.scn")! // "Focus_mocus"
+            infoNode = arrowScene.rootNode.childNode(withName: "Meshes",
+                                                       recursively: false)! // "main"
+            infoNode.scale = SCNVector3(0.8, 0.8, 0.8)
+            infoNode.position = endRoute
+            infoNode.name = name
+            sceneView.scene.rootNode.addChildNode(infoNode)
+            print("Init : add object - Allow") // Focusw
+        }
 }
 

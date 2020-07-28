@@ -59,7 +59,10 @@ class Plane: SCNNode{
       
         //5. By Default An SCNPlane Is Rendered Vertically So If We Need It Horizontal We Need To Rotate It
         if horizontal{
-            self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(Float(Double.pi), 1, 0, 1))//SCNMatrix4MakeRotation(0, 1, 3, 0)
+            self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(Float(Double.pi), 1, 0, 1))
+            self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(Float(Double.pi)/1.0, 0, 0, 1))
+            
+            //SCNMatrix4MakeRotation(0, 1, 3, 0)
         }
         
     }
@@ -141,17 +144,16 @@ extension ARSceneController {
        func sessionInterruptionEnded(_ session: ARSession) {
            // Reset tracking and/or remove existing anchors if consistent tracking is required
        } */
-       func addPlane(){
-           
+          func addPlane(content : UIImage, place : SCNVector3){
            //1. Create Our Plane Node
-           let color = #colorLiteral(red: 0.6549019608, green: 0.6638626321, blue: 0.9686274529, alpha: 0.65)
-           let plane = Plane(content : arImage, doubleSided: true, horizontal: true)
+           //let color = #colorLiteral(red: 0.6549019608, green: 0.6638626321, blue: 0.9686274529, alpha: 0.65)
+                let plane = Plane(content : content, doubleSided: true, horizontal: true)
            
            //2. Set It's Position 1.5m Away From The Camera
-           plane.position = SCNVector3(10, 0, 0)
-           
+                plane.position = place//SCNVector3(10, 0, 0)
+                plane.name = "plane \(UIImage.description())"
            //3. Add Our Plane To Our ARSCNView
-           self.sceneView.scene.rootNode.addChildNode(plane)
+                self.sceneView.scene.rootNode.addChildNode(plane)
            
        }
     func draw3DLine(_ nodeA : SCNVector3, _ nodeB : SCNVector3) {
