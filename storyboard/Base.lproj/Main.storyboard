@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n2e-5d-o6w">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n2e-5d-o6w">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -11,7 +11,7 @@
         <!--Maps Tree Update-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ECO_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Sber_AR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -19,7 +19,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nz8-5c-99f" customClass="NMAMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20F-Vf-4S0" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="20F-Vf-4S0" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -54,7 +54,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2L-jv-6xe" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N2L-jv-6xe" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
                                         <rect key="frame" x="3" y="42" width="45" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -83,7 +83,7 @@
                                             <action selector="panDraw:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HdV-R7-3rD"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJF-UU-q6v" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bJF-UU-q6v" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
                                         <rect key="frame" x="56" y="42" width="45" height="25"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -94,6 +94,27 @@
                                                 <state key="normal" title="udp"/>
                                                 <connections>
                                                     <action selector="drawOffsetPoint:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8vT-lX-xn0"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wk9-fF-6c9" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
+                                        <rect key="frame" x="109" y="42" width="45" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HFH-4c-D4j">
+                                                <rect key="frame" x="8" y="1" width="30" height="24"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                <state key="normal" title="YMK"/>
+                                                <connections>
+                                                    <action selector="YMKView:" destination="BYZ-38-t0r" eventType="touchUpInside" id="5Hz-3a-d6H"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -141,7 +162,7 @@
         <!--Drone Zone-->
         <scene sceneID="GqX-BA-cDE">
             <objects>
-                <tableViewController id="cTC-x7-huW" customClass="DroneZone" customModule="ECO_" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="cTC-x7-huW" customClass="DroneZone" customModule="Sber_AR" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="vnu-sK-5Qo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -183,7 +204,7 @@
         <!--Scene Controller-->
         <scene sceneID="FHx-kf-0V8">
             <objects>
-                <viewController storyboardIdentifier="ARScene" wantsFullScreenLayout="YES" id="6oS-Zt-hYI" customClass="ARSceneController" customModule="ECO_" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ARScene" wantsFullScreenLayout="YES" id="6oS-Zt-hYI" customClass="ARSceneController" customModule="Sber_AR" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zSk-hh-okp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -287,7 +308,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UD9-sb-cYr" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                                    <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UD9-sb-cYr" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
@@ -320,6 +341,13 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Z7-YY-NNO">
+                                                <rect key="frame" x="140" y="8" width="49" height="31"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <connections>
+                                                    <action selector="startEstimateState:" destination="6oS-Zt-hYI" eventType="valueChanged" id="QR8-7b-Foj"/>
+                                                </connections>
+                                            </switch>
                                         </subviews>
                                         <color key="backgroundColor" red="0.32809016481662551" green="0.15261399902925249" blue="0.41317243219119171" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <userDefinedRuntimeAttributes>
@@ -414,6 +442,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ceK-JM-0at">
+                                        <rect key="frame" x="8" y="556" width="367" height="68"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
@@ -445,6 +480,7 @@
                         <outlet property="SliderDirection" destination="RzA-dU-XOx" id="hO9-JJ-pC3"/>
                         <outlet property="geoPosition" destination="GeM-mR-cfW" id="6gU-XP-WH2"/>
                         <outlet property="heightFround" destination="ISO-fe-m8T" id="h0t-q6-c5D"/>
+                        <outlet property="infoML" destination="ceK-JM-0at" id="KxK-oY-CR9"/>
                         <outlet property="isBearing" destination="2ws-FP-fGx" id="9ec-Rq-jR8"/>
                         <outlet property="isDirection" destination="nxs-V9-ntl" id="wgS-aM-qFy"/>
                         <outlet property="nodePosition" destination="9ew-Il-h49" id="4v7-vt-Ncn"/>
@@ -457,6 +493,7 @@
                         <outlet property="sceneView" destination="ilQ-Sg-egE" id="5FK-7o-aGa"/>
                         <outlet property="segmentRoute" destination="zQY-ua-uCM" id="gIO-2G-rOu"/>
                         <outlet property="startDrawAR" destination="aCx-4C-ufa" id="xdv-2e-bER"/>
+                        <outlet property="startEstimate" destination="7Z7-YY-NNO" id="2ir-sw-b7o"/>
                         <outlet property="worldCoordinate" destination="De0-zD-Nm1" id="mW4-Hd-Zp7"/>
                         <outlet property="worldPosition" destination="fKz-TH-K0y" id="rV9-Di-p8l"/>
                     </connections>
@@ -473,7 +510,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="tm6-ll-jpl">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.0" green="0.76542260362694303" blue="0.080275350507218998" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.039215686274509803" green="0.46274509803921571" blue="0.078431372549019607" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -482,7 +519,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nU2-9X-eR2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="116.49175412293854"/>
+            <point key="canvasLocation" x="473" y="313"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="wZN-J9-nTY">
@@ -492,7 +529,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dot-oa-GNL" customClass="CardView" customModule="ECO_" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dot-oa-GNL" customClass="CardView" customModule="Sber_AR" customModuleProvider="target">
                                 <rect key="frame" x="20" y="100" width="335" height="467"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mo5-gV-Kdz">

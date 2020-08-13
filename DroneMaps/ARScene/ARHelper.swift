@@ -46,13 +46,18 @@ extension SCNNode {
         let animationGroup = CAAnimationGroup.init()
         animationGroup.duration = 1.0
         animationGroup.repeatCount = .infinity
+    
         let opacityAnimation = CABasicAnimation(keyPath: "opacity")
         opacityAnimation.fromValue = NSNumber(value: 1.0)
         opacityAnimation.toValue = NSNumber(value: 0.5)
+        /*
         let scaleAnimation = CABasicAnimation(keyPath: "scale")
         scaleAnimation.fromValue = NSValue(scnVector3: SCNVector3(1.0, 1.0, 1.0))
-        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(1, 1, 1))
-        animationGroup.animations = [opacityAnimation, scaleAnimation]
+        scaleAnimation.toValue = NSValue(scnVector3: SCNVector3(2, 2, 2))
+        */
+
+    
+        animationGroup.animations = [opacityAnimation]
         nodeAnimation.addAnimation(animationGroup, forKey: "animations")
     }
 }

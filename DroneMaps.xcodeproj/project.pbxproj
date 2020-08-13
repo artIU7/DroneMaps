@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B70BB1C924D6A51800DAB15B /* Inceptionv3.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B70BB1C824D6A51700DAB15B /* Inceptionv3.mlmodel */; };
 		B7127C802427779200938FF8 /* extensionPoly.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7127C7B2427779200938FF8 /* extensionPoly.swift */; };
 		B7127C812427779200938FF8 /* CheckerArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7127C7C2427779200938FF8 /* CheckerArea.swift */; };
 		B7127C822427779200938FF8 /* inPolyPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7127C7D2427779200938FF8 /* inPolyPoint.swift */; };
@@ -19,6 +20,7 @@
 		B722ED8724279000007EE093 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6E21D2426D2020037DE54 /* ViewController.swift */; };
 		B722ED8924279AAF007EE093 /* way-x.png in Resources */ = {isa = PBXBuildFile; fileRef = B722ED8824279AAF007EE093 /* way-x.png */; };
 		B722ED8B24279CCE007EE093 /* route_x.png in Resources */ = {isa = PBXBuildFile; fileRef = B722ED8A24279CCE007EE093 /* route_x.png */; };
+		B72F4B4A24D18D1400B9E9DA /* Red_Arrow_Chevrons_Wayfinding.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B72F4B4924D18D1400B9E9DA /* Red_Arrow_Chevrons_Wayfinding.usdz */; };
 		B73DA5D424277E9200CCCC3C /* MaterialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73DA5D324277E9200CCCC3C /* MaterialView.swift */; };
 		B73DA5D6242780DB00CCCC3C /* map_x.png in Resources */ = {isa = PBXBuildFile; fileRef = B73DA5D5242780DB00CCCC3C /* map_x.png */; };
 		B7408CA224B1057700D023D3 /* CurrentRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7408CA124B1057700D023D3 /* CurrentRoute.swift */; };
@@ -27,7 +29,15 @@
 		B758086D2463983700961DC2 /* extension+mapGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B758086C2463983700961DC2 /* extension+mapGesture.swift */; };
 		B75808702463A67500961DC2 /* pin_s.png in Resources */ = {isa = PBXBuildFile; fileRef = B758086E2463A67400961DC2 /* pin_s.png */; };
 		B75808712463A67500961DC2 /* pin_e.png in Resources */ = {isa = PBXBuildFile; fileRef = B758086F2463A67400961DC2 /* pin_e.png */; };
+		B75CF20D24D07DE800CB9E7E /* ObjectDetector.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B75CF20C24D07DE800CB9E7E /* ObjectDetector.mlmodel */; };
+		B75CF20F24D09A9F00CB9E7E /* octoberModel 1.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B75CF20E24D09A9E00CB9E7E /* octoberModel 1.mlmodel */; };
+		B75CF21124D09AFC00CB9E7E /* octoberModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B75CF21024D09AFC00CB9E7E /* octoberModel.mlmodel */; };
+		B75CF21324D09CBE00CB9E7E /* october.png in Resources */ = {isa = PBXBuildFile; fileRef = B75CF21224D09CBE00CB9E7E /* october.png */; };
 		B7627D6D24B612AB0065E190 /* drone_svg_tf.png in Resources */ = {isa = PBXBuildFile; fileRef = B7627D6C24B612AB0065E190 /* drone_svg_tf.png */; };
+		B767B7BD24D4CC28002B465E /* ARModelNavigate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B767B7BC24D4CC28002B465E /* ARModelNavigate.swift */; };
+		B767B7BF24D56214002B465E /* routePedestrianYA.swift in Sources */ = {isa = PBXBuildFile; fileRef = B767B7BE24D56214002B465E /* routePedestrianYA.swift */; };
+		B767B7C124D572DA002B465E /* YMKView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B767B7C024D572DA002B465E /* YMKView.storyboard */; };
+		B767B7C324D57337002B465E /* MapKitYAView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B767B7C224D57337002B465E /* MapKitYAView.swift */; };
 		B78D199824CB3166002B4B47 /* Down_Arrow_Animated.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B78D199724CB3166002B4B47 /* Down_Arrow_Animated.usdz */; };
 		B7A6E21A2426D2020037DE54 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6E2192426D2020037DE54 /* AppDelegate.swift */; };
 		B7A6E21C2426D2020037DE54 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A6E21B2426D2020037DE54 /* SceneDelegate.swift */; };
@@ -50,6 +60,7 @@
 		B7D42AD02427D85D002FE36F /* drone_svg.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D42ACF2427D85D002FE36F /* drone_svg.png */; };
 		B7D42AD22427DA8D002FE36F /* way_3d.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D42AD12427DA8D002FE36F /* way_3d.png */; };
 		B7D42AD42427DB3C002FE36F /* way-x_2.png in Resources */ = {isa = PBXBuildFile; fileRef = B7D42AD32427DB3C002FE36F /* way-x_2.png */; };
+		B7DE59CB24D6619D00D9F599 /* JumpBoost_Arrow.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7DE59CA24D6619D00D9F599 /* JumpBoost_Arrow.usdz */; };
 		B7E4B73C2427B1820083549B /* compass.sketch in Resources */ = {isa = PBXBuildFile; fileRef = B7E4B7302427B1810083549B /* compass.sketch */; };
 		B7E4B73D2427B1820083549B /* flag_brazil.png in Resources */ = {isa = PBXBuildFile; fileRef = B7E4B7312427B1810083549B /* flag_brazil.png */; };
 		B7E4B73E2427B1820083549B /* geokniga-cistemy-koordinat-v-geodezii.pdf in Resources */ = {isa = PBXBuildFile; fileRef = B7E4B7322427B1810083549B /* geokniga-cistemy-koordinat-v-geodezii.pdf */; };
@@ -63,6 +74,7 @@
 		B7E4B7462427B1820083549B /* camera_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B7E4B73A2427B1820083549B /* camera_2x.png */; };
 		B7E4B7472427B1820083549B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B7E4B73B2427B1820083549B /* art.scnassets */; };
 		B7EA92F52488173F00B1D31C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B7EA92F42488173F00B1D31C /* icon.png */; };
+		B7EAD39B24D58FE700ECB936 /* arIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = B7EAD39A24D58FE700ECB936 /* arIcon.png */; };
 		B7EB3BBD2437D3D700F3C4E5 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3BB42437D3D400F3C4E5 /* 1.png */; };
 		B7EB3BBE2437D3D700F3C4E5 /* pos.png in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3BB52437D3D500F3C4E5 /* pos.png */; };
 		B7EB3BBF2437D3D700F3C4E5 /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = B7EB3BB62437D3D500F3C4E5 /* 4.png */; };
@@ -85,6 +97,7 @@
 
 /* Begin PBXFileReference section */
 		48ECD0E05A10752B508FE054 /* Pods_DroneMaps.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DroneMaps.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B70BB1C824D6A51700DAB15B /* Inceptionv3.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = Inceptionv3.mlmodel; sourceTree = "<group>"; };
 		B7127C7B2427779200938FF8 /* extensionPoly.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = extensionPoly.swift; sourceTree = "<group>"; };
 		B7127C7C2427779200938FF8 /* CheckerArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckerArea.swift; sourceTree = "<group>"; };
 		B7127C7D2427779200938FF8 /* inPolyPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = inPolyPoint.swift; sourceTree = "<group>"; };
@@ -96,6 +109,7 @@
 		B7127C882427782000938FF8 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 4.png; path = png/4.png; sourceTree = SOURCE_ROOT; };
 		B722ED8824279AAF007EE093 /* way-x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "way-x.png"; sourceTree = SOURCE_ROOT; };
 		B722ED8A24279CCE007EE093 /* route_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = route_x.png; sourceTree = SOURCE_ROOT; };
+		B72F4B4924D18D1400B9E9DA /* Red_Arrow_Chevrons_Wayfinding.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Red_Arrow_Chevrons_Wayfinding.usdz; sourceTree = "<group>"; };
 		B73DA5D324277E9200CCCC3C /* MaterialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaterialView.swift; sourceTree = "<group>"; };
 		B73DA5D5242780DB00CCCC3C /* map_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = map_x.png; sourceTree = SOURCE_ROOT; };
 		B7408CA124B1057700D023D3 /* CurrentRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRoute.swift; sourceTree = "<group>"; };
@@ -104,9 +118,17 @@
 		B758086C2463983700961DC2 /* extension+mapGesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "extension+mapGesture.swift"; sourceTree = "<group>"; };
 		B758086E2463A67400961DC2 /* pin_s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_s.png; sourceTree = SOURCE_ROOT; };
 		B758086F2463A67400961DC2 /* pin_e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin_e.png; sourceTree = SOURCE_ROOT; };
+		B75CF20C24D07DE800CB9E7E /* ObjectDetector.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = ObjectDetector.mlmodel; sourceTree = "<group>"; };
+		B75CF20E24D09A9E00CB9E7E /* octoberModel 1.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = "octoberModel 1.mlmodel"; sourceTree = SOURCE_ROOT; };
+		B75CF21024D09AFC00CB9E7E /* octoberModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = octoberModel.mlmodel; sourceTree = SOURCE_ROOT; };
+		B75CF21224D09CBE00CB9E7E /* october.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = october.png; sourceTree = "<group>"; };
 		B7627D6C24B612AB0065E190 /* drone_svg_tf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drone_svg_tf.png; sourceTree = SOURCE_ROOT; };
+		B767B7BC24D4CC28002B465E /* ARModelNavigate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARModelNavigate.swift; sourceTree = "<group>"; };
+		B767B7BE24D56214002B465E /* routePedestrianYA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = routePedestrianYA.swift; sourceTree = "<group>"; };
+		B767B7C024D572DA002B465E /* YMKView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = YMKView.storyboard; sourceTree = "<group>"; };
+		B767B7C224D57337002B465E /* MapKitYAView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapKitYAView.swift; sourceTree = "<group>"; };
 		B78D199724CB3166002B4B47 /* Down_Arrow_Animated.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Down_Arrow_Animated.usdz; sourceTree = "<group>"; };
-		B7A6E2162426D2020037DE54 /* ECO .app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ECO .app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7A6E2162426D2020037DE54 /* Sber AR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sber AR.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7A6E2192426D2020037DE54 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7A6E21B2426D2020037DE54 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B7A6E21D2426D2020037DE54 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -130,6 +152,7 @@
 		B7D42ACF2427D85D002FE36F /* drone_svg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = drone_svg.png; sourceTree = SOURCE_ROOT; };
 		B7D42AD12427DA8D002FE36F /* way_3d.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = way_3d.png; path = DroneMaps/asset_icon/way_3d.png; sourceTree = SOURCE_ROOT; };
 		B7D42AD32427DB3C002FE36F /* way-x_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "way-x_2.png"; path = "png/way-x_2.png"; sourceTree = SOURCE_ROOT; };
+		B7DE59CA24D6619D00D9F599 /* JumpBoost_Arrow.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = JumpBoost_Arrow.usdz; sourceTree = "<group>"; };
 		B7E4B7302427B1810083549B /* compass.sketch */ = {isa = PBXFileReference; lastKnownFileType = file; name = compass.sketch; path = ARScene/compass.sketch; sourceTree = SOURCE_ROOT; };
 		B7E4B7312427B1810083549B /* flag_brazil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = flag_brazil.png; path = ARScene/flag_brazil.png; sourceTree = SOURCE_ROOT; };
 		B7E4B7322427B1810083549B /* geokniga-cistemy-koordinat-v-geodezii.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = "geokniga-cistemy-koordinat-v-geodezii.pdf"; path = "ARScene/geokniga-cistemy-koordinat-v-geodezii.pdf"; sourceTree = SOURCE_ROOT; };
@@ -143,6 +166,7 @@
 		B7E4B73A2427B1820083549B /* camera_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_2x.png; path = ARScene/camera_2x.png; sourceTree = SOURCE_ROOT; };
 		B7E4B73B2427B1820083549B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; name = art.scnassets; path = DroneMaps/ARScene/art.scnassets; sourceTree = SOURCE_ROOT; };
 		B7EA92F42488173F00B1D31C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = DroneMaps/icon.png; sourceTree = SOURCE_ROOT; };
+		B7EAD39A24D58FE700ECB936 /* arIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arIcon.png; sourceTree = SOURCE_ROOT; };
 		B7EB3BB42437D3D400F3C4E5 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		B7EB3BB52437D3D500F3C4E5 /* pos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pos.png; sourceTree = "<group>"; };
 		B7EB3BB62437D3D500F3C4E5 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
@@ -196,6 +220,7 @@
 		B7127C8D2427782500938FF8 /* asset_icon */ = {
 			isa = PBXGroup;
 			children = (
+				B7EAD39A24D58FE700ECB936 /* arIcon.png */,
 				B7627D6C24B612AB0065E190 /* drone_svg_tf.png */,
 				B7EA92F42488173F00B1D31C /* icon.png */,
 				B7E4B73A2427B1820083549B /* camera_2x.png */,
@@ -225,6 +250,7 @@
 		B7A6E20D2426D2020037DE54 = {
 			isa = PBXGroup;
 			children = (
+				B75CF21224D09CBE00CB9E7E /* october.png */,
 				B7EB3BB32437D37B00F3C4E5 /* png */,
 				B7A6E2182426D2020037DE54 /* DroneMaps */,
 				B7ACACA5242971AB00C39243 /* storyboard */,
@@ -237,7 +263,7 @@
 		B7A6E2172426D2020037DE54 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B7A6E2162426D2020037DE54 /* ECO .app */,
+				B7A6E2162426D2020037DE54 /* Sber AR.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -245,6 +271,10 @@
 		B7A6E2182426D2020037DE54 /* DroneMaps */ = {
 			isa = PBXGroup;
 			children = (
+				B70BB1C824D6A51700DAB15B /* Inceptionv3.mlmodel */,
+				B75CF21024D09AFC00CB9E7E /* octoberModel.mlmodel */,
+				B75CF20E24D09A9E00CB9E7E /* octoberModel 1.mlmodel */,
+				B75CF20C24D07DE800CB9E7E /* ObjectDetector.mlmodel */,
 				B7EB3E1A24392D0F00F3C4E5 /* BottomSheetView.swift */,
 				B7EB3E1924392D0F00F3C4E5 /* BottomSheetViewController.swift */,
 				B7ACACA62429721C00C39243 /* Network */,
@@ -262,6 +292,7 @@
 				B7B70E0824BF5A8800835847 /* extensionViewController.swift */,
 				B7A6E2222426D2050037DE54 /* Assets.xcassets */,
 				B7A6E2272426D2050037DE54 /* Info.plist */,
+				B767B7C224D57337002B465E /* MapKitYAView.swift */,
 			);
 			path = DroneMaps;
 			sourceTree = "<group>";
@@ -269,13 +300,16 @@
 		B7ACACA02429712700C39243 /* ARScene */ = {
 			isa = PBXGroup;
 			children = (
+				B7DE59CA24D6619D00D9F599 /* JumpBoost_Arrow.usdz */,
 				B7B70E0624BF38E600835847 /* ARDroneMesh.swift */,
 				B7B70E0424BF372800835847 /* ARLabelInfo.swift */,
 				B7B70E0224BF333600835847 /* ARHelper.swift */,
 				B7B70E0024BF332900835847 /* ARDrawLine.swift */,
 				B7B70DFE24BF313400835847 /* ARSession.swift */,
 				B7E4B7392427B1820083549B /* ARSceneController.swift */,
+				B767B7BC24D4CC28002B465E /* ARModelNavigate.swift */,
 				B78D199724CB3166002B4B47 /* Down_Arrow_Animated.usdz */,
+				B72F4B4924D18D1400B9E9DA /* Red_Arrow_Chevrons_Wayfinding.usdz */,
 				B7E4B73B2427B1820083549B /* art.scnassets */,
 				B7E4B7382427B1810083549B /* camera.sketch */,
 				B7E4B7302427B1810083549B /* compass.sketch */,
@@ -322,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				B7127C7F2427779200938FF8 /* routeChild.swift */,
+				B767B7BE24D56214002B465E /* routePedestrianYA.swift */,
 			);
 			path = route;
 			sourceTree = "<group>";
@@ -332,6 +367,7 @@
 				B7EB3E1624392C6F00F3C4E5 /* BottomSheet.storyboard */,
 				B7A6E21F2426D2020037DE54 /* Main.storyboard */,
 				B7A6E2242426D2050037DE54 /* LaunchScreen.storyboard */,
+				B767B7C024D572DA002B465E /* YMKView.storyboard */,
 			);
 			path = storyboard;
 			sourceTree = "<group>";
@@ -376,6 +412,7 @@
 				B7A6E2132426D2020037DE54 /* Frameworks */,
 				B7A6E2142426D2020037DE54 /* Resources */,
 				85F979DF4D5FBA35B18BBDFF /* [CP] Embed Pods Frameworks */,
+				7A1E782600C582E408E8FE8B /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -383,7 +420,7 @@
 			);
 			name = DroneMaps;
 			productName = DroneMaps;
-			productReference = B7A6E2162426D2020037DE54 /* ECO .app */;
+			productReference = B7A6E2162426D2020037DE54 /* Sber AR.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -440,6 +477,7 @@
 				B7D42AD22427DA8D002FE36F /* way_3d.png in Resources */,
 				B7D42ACA2427D487002FE36F /* istockphoto-510069620-1024x1024.jpg in Resources */,
 				B7EB3BC02437D3D700F3C4E5 /* 2.png in Resources */,
+				B7DE59CB24D6619D00D9F599 /* JumpBoost_Arrow.usdz in Resources */,
 				B7E4B7462427B1820083549B /* camera_2x.png in Resources */,
 				B7E4B7422427B1820083549B /* gravityandheading_2x.png in Resources */,
 				B7EB3E1824392C6F00F3C4E5 /* BottomSheet.storyboard in Resources */,
@@ -449,13 +487,17 @@
 				B7EB3BBD2437D3D700F3C4E5 /* 1.png in Resources */,
 				B7D42AD42427DB3C002FE36F /* way-x_2.png in Resources */,
 				B7E4B7472427B1820083549B /* art.scnassets in Resources */,
+				B7EAD39B24D58FE700ECB936 /* arIcon.png in Resources */,
 				B7E4B7402427B1820083549B /* gravity.png in Resources */,
+				B767B7C124D572DA002B465E /* YMKView.storyboard in Resources */,
 				B7127C8C2427782000938FF8 /* 4.png in Resources */,
 				B7EB3E132439198400F3C4E5 /* poly_icon.png in Resources */,
 				B7EB3BBF2437D3D700F3C4E5 /* 4.png in Resources */,
 				B7EB3BC12437D3D700F3C4E5 /* home-button-for-interface.png in Resources */,
 				B7E4B73C2427B1820083549B /* compass.sketch in Resources */,
+				B72F4B4A24D18D1400B9E9DA /* Red_Arrow_Chevrons_Wayfinding.usdz in Resources */,
 				B7A6E2232426D2050037DE54 /* Assets.xcassets in Resources */,
+				B75CF21324D09CBE00CB9E7E /* october.png in Resources */,
 				B7E4B73D2427B1820083549B /* flag_brazil.png in Resources */,
 				B75808702463A67500961DC2 /* pin_s.png in Resources */,
 				B7127C892427782000938FF8 /* 2.png in Resources */,
@@ -496,6 +538,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		7A1E782600C582E408E8FE8B /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DroneMaps/Pods-DroneMaps-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DroneMaps/Pods-DroneMaps-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DroneMaps/Pods-DroneMaps-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		85F979DF4D5FBA35B18BBDFF /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -521,6 +580,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7127C822427779200938FF8 /* inPolyPoint.swift in Sources */,
+				B70BB1C924D6A51800DAB15B /* Inceptionv3.mlmodel in Sources */,
 				B7127C832427779200938FF8 /* File.swift in Sources */,
 				B7412450247D8C130069D5AF /* IntersectionCircle.swift in Sources */,
 				B7B70DFF24BF313400835847 /* ARSession.swift in Sources */,
@@ -528,7 +588,10 @@
 				B7B70E0324BF333600835847 /* ARHelper.swift in Sources */,
 				B73DA5D424277E9200CCCC3C /* MaterialView.swift in Sources */,
 				B7E4B7452427B1820083549B /* ARSceneController.swift in Sources */,
+				B75CF20F24D09A9F00CB9E7E /* octoberModel 1.mlmodel in Sources */,
 				B722ED8724279000007EE093 /* ViewController.swift in Sources */,
+				B75CF20D24D07DE800CB9E7E /* ObjectDetector.mlmodel in Sources */,
+				B75CF21124D09AFC00CB9E7E /* octoberModel.mlmodel in Sources */,
 				B7ACACA82429724200C39243 /* NetworkLayer.swift in Sources */,
 				B7B70E0F24BF5B0800835847 /* helperStructViewController.swift in Sources */,
 				B7408CA224B1057700D023D3 /* CurrentRoute.swift in Sources */,
@@ -542,11 +605,14 @@
 				B7B70E0D24BF5AD400835847 /* helperBusController.swift in Sources */,
 				B7B70E0B24BF5AC100835847 /* routeBusContoller.swift in Sources */,
 				B741244E247D8B220069D5AF /* Circle.swift in Sources */,
+				B767B7BD24D4CC28002B465E /* ARModelNavigate.swift in Sources */,
 				B7A6E21A2426D2020037DE54 /* AppDelegate.swift in Sources */,
 				B7EB3E0D2438153C00F3C4E5 /* User.swift in Sources */,
 				B7A6E21C2426D2020037DE54 /* SceneDelegate.swift in Sources */,
 				B7127C842427779200938FF8 /* routeChild.swift in Sources */,
+				B767B7BF24D56214002B465E /* routePedestrianYA.swift in Sources */,
 				B7B70E0724BF38E600835847 /* ARDroneMesh.swift in Sources */,
+				B767B7C324D57337002B465E /* MapKitYAView.swift in Sources */,
 				B7EB3E1B24392D0F00F3C4E5 /* BottomSheetViewController.swift in Sources */,
 				B7127C802427779200938FF8 /* extensionPoly.swift in Sources */,
 			);
@@ -709,7 +775,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brazil-.DroneMaps";
-				PRODUCT_NAME = "ECO ";
+				PRODUCT_NAME = "Sber AR";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -728,7 +794,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "brazil-.DroneMaps";
-				PRODUCT_NAME = "ECO ";
+				PRODUCT_NAME = "Sber AR";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

@@ -10,6 +10,11 @@ import NMAKit
 import CoreTelephony
 import CoreML
 import AVFoundation
+import YandexMapKit
+
+
+
+///
 
 /// MARK Prorocol section
 protocol ButtonDelegate : class {
@@ -73,6 +78,10 @@ struct drone_ {
     var coordinate : NMAGeoCoordinates
 }
 /// MARK Variable section
+var layerRoute1 = [NMAMapPolyline]()
+var layerRoute2 = [NMAMapPolyline]()
+var layerRoute3 = [NMAMapPolyline]()
+var layerRoute4 = [NMAMapPolyline]()
 //
 var arrayVert = [area]()
 //z
@@ -112,7 +121,9 @@ private var geoPolyline : NMAMapPolyline?
 var id_user = 1
 var offsetPoint : NMAGeoCoordinates?// = nil
 var arrayARObject = [NMAGeoCoordinates]()//?//[offsetPoint]?
+var arrayARObjectYAM = [NMAGeoCoordinates]()//?//[offsetPoint]?
 var arrayBusMove = [NMAMapMarker]()
+var newArrayAR = [NMAGeoCoordinates]()
 /* "LineString","coordinates":[[37.54329800605774,55.89138380688599],[37.5432550907135,55.89074306140778],[37.54386126995086,55.8907550942842],[37.544381618499756,55.89076411893906],[37.5444620847702,55.89076712715686],[37.544424533843994,55.891498117173775]] */
 // class vc
 var arrayObj = [String:Any]()
@@ -120,6 +131,9 @@ var arrayDict = [[String:Double]]()
 
 /// MARK class ViewController Section
 class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate {
+    /// MARK Section navigate
+    lazy var navigationManager = NMANavigationManager.sharedInstance()
+
     /// MARK Variable section
     var tempArray = [NMAGeoCoordinates]()
     var obRoute : [NMAGeoCoordinates]?
@@ -153,6 +167,9 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
     //
     var coreRouter: NMACoreRouter!
     //
+    var routeNav : NMARoute?
+    private var geoBoundingBox : NMAGeoBoundingBox?
+    var mapRouteNav : NMAMapRoute?
     var mapRouts = [NMAMapRoute]()
     var progress: Progress? = nil
     //
@@ -244,7 +261,7 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
                                                name: NSNotification.Name("DrawCircle"),
                                                object: nil)
         // Do any additional setup after loading the view, typically from a nib.
-        self.title = "Drone Managment"
+        self.title = "Route AR"
         self.navigationItem.leftBarButtonItem = self.editButtonItem
         self.alertCard.backgroundColor = #colorLiteral(red: 0.8823654819, green: 0.8115270822, blue: 0.578507819, alpha: 0.5)
         self.index_touch = 0
@@ -335,7 +352,10 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
          /*for point in testRoute {
                   arrayARObject.append(point)
         }*/
+        navigationManager.delegate = self
+        navigationManager.isSpeedWarningEnabled = true
 }
+    
 /// MARK IBAction Section
     @IBAction func panDraw(_ sender: Any) {
         if panDrawLine == "Inactivate" {
@@ -405,7 +425,7 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
                            arrayObjSelect as! [objectSelectedUsers]
                            polyCount.text! = "Poly in map : \(arrayObjSelect.count)"
                            print(arrayObjSelect)
-                        self.createPolyline(CTR: array_area.frame_area, colorPoly, 3)
+                    self.createPolyline(CTR: array_area.frame_area, colorPoly, 3, isShow: true)
                     //
                   
                     //
@@ -477,11 +497,54 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
         @IBAction func drawOffsetPoint(_ sender: Any) {
             let pointXColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
             let pointYColor = #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
-            self.createCircle(geoCoord: testXPoint!, color: pointXColor, rad: Int(1.5))
-            for point in arrayColisionPoint {
-                self.createCircle(geoCoord: point, color: pointYColor, rad: Int(1.5))
+            if arrayColisionPoint.isEmpty != true {
+                self.createCircle(geoCoord: testXPoint!, color: pointXColor, rad: Int(1.5))
+                          for point in arrayColisionPoint {
+                              self.createCircle(geoCoord: point, color: pointYColor, rad: Int(1.5))
+                          }
             }
+          
+            
+            let GPSColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+            let ARColor = #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)
+              if arrayGPS.isEmpty != true &&  arrayAR.isEmpty != true {
+                self.createPolyline(CTR: toNMAArray(array: arrayGPS), GPSColor, 2, isShow: true)
+                self.createPolyline(CTR: toNMAArray(array: arrayAR), ARColor, 2, isShow: true)
+                }
+              
+            if arrayNewRoute.isEmpty != true {
+                let colorRYan = #colorLiteral(red: 0.7233391637, green: 0.1817918539, blue: 0.1189745283, alpha: 1)
+                let arrayYA = YAMtoNMA(array: arrayNewRoute)
+                let objectRoute = self.addDash(route: arrayYA, color: colorRYan)
+                arrayARObjectYAM = arrayYA
+                layerRoute3 = objectRoute.0
+                layerRoute4 = objectRoute.1
+                self.mapHere.add(mapObjects: layerRoute3)
+                self.mapHere.add(mapObjects: layerRoute4)
+            }
+            
         }
+    func YAMtoNMA(array : [YMKPoint]) -> [NMAGeoCoordinates] {
+        var newArray = [NMAGeoCoordinates]()
+        for ar in array {
+            newArray.append(NMAGeoCoordinates(latitude: ar.latitude, longitude: ar.longitude))
+        }
+        return newArray
+    }
+    @IBAction func YMKView(_ sender: Any) {
+        let storyboardName = "YMKView"
+        let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+            let initialViewController = storyboard.instantiateInitialViewController()
+            self.navigationController!.pushViewController(initialViewController!, animated: true)
+        }
+    /// [Coordinate ] to [NMAGeoCoordinates]
+    func toNMAArray(array : [Coordinate]) -> [NMAGeoCoordinates] {
+        var arrayNMA = [NMAGeoCoordinates]()
+        for pg in array {
+            arrayNMA.append(NMAGeoCoordinates(latitude: pg.lat, longitude: pg.lon))
+        }
+        return arrayNMA
+    }
     /// MARK Methods Section
     // methods corelocation 1
     func initCoreLocation() {
@@ -656,7 +719,7 @@ class ViewController: UIViewController,ButtonDelegate, CLLocationManagerDelegate
                                arrayObjSelect as! [objectSelectedUsers]
                                polyCount.text! = "Poly in map : \(arrayObjSelect.count)"
                                print(arrayObjSelect)
-                            self.createPolyline(CTR: array_area.frame_area, colorPoly, 3)
+                        self.createPolyline(CTR: array_area.frame_area, colorPoly, 3, isShow: true)
                         //arrayVert
                         var onew = array_area.frame_area
                         print(onew)
@@ -760,10 +823,7 @@ extension ViewController {
 }
 extension ViewController {
     // draw segment Line
-    public func createPolyline(CTR : [NMAGeoCoordinates],_ color : UIColor , _ width : Int) -> NMAMapPolyline {
-        // add animation
-        let animationGroup = CAAnimationGroup.init()
-        
+    public func createPolyline(CTR : [NMAGeoCoordinates],_ color : UIColor , _ width : Int, isShow : Bool) -> NMAMapPolyline {
         // cleanup()
         //create a NMAGeoBoundingBox with center gec coordinates, width and hegiht in degrees.
         geoBox1 = NMAGeoBoundingBox(coordinates: CTR)
@@ -773,8 +833,9 @@ extension ViewController {
         //set border line color to be red
         geoPolyline?.lineColor = color//UIColor(displayP3Red: 0.6, green: 0.8, blue: 1, alpha: 0.6)
         //add NMAMapPolyline to map view
-        
-        _ = geoPolyline.map { mapHere?.add(mapObject: $0) }
+        if isShow == true {
+            _ = geoPolyline.map { mapHere?.add(mapObject: $0) }
+        }
         return geoPolyline!
     }
     // draw polygon
@@ -802,8 +863,8 @@ extension ViewController {
         var arrayLine = points
         if type == "Normal" {
             var array = [NMAMapPolyline]()
-            let mainLine = self.createPolyline(CTR:arrayLine, color, 20)
-            let subLine = self.createPolyline(CTR:arrayLine, UIColor.black, 4)
+            let mainLine = self.createPolyline(CTR:arrayLine, color, 10, isShow: false)
+            let subLine = self.createPolyline(CTR:arrayLine, UIColor.black, 4, isShow: false)
             array.append(mainLine)
             array.append(subLine)
             return array
@@ -825,8 +886,8 @@ extension ViewController {
                 self.createCircle(geoCoord: medlPos, color: middleColor, rad: Int(2.5))
             }
             var array = [NMAMapPolyline]()
-            let mainLine = self.createPolyline(CTR:points, color, 20)
-            let subLine = self.createPolyline(CTR:arrayLine, UIColor.black, 4)
+            let mainLine = self.createPolyline(CTR:points, color, 20, isShow: true)
+            let subLine = self.createPolyline(CTR:arrayLine, UIColor.black, 4, isShow: true)
             array.append(mainLine)
             array.append(subLine)
             return array
@@ -842,17 +903,23 @@ extension ViewController {
      get(url: "https://droneservice.herokuapp.com/location/")
     //    }
     }
+    func updateMapAR() {
+        if currentPosMap != nil {
+            let usrlImage = "https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=JdbJa6yZk5MljMzUe9bUO8X8FpHsF02J7UdmHY6hoKs&i&c=\(currentPosMap!.latitude),\(currentPosMap!.longitude)&h=200&w=300&r=50"
+                
+                self.getImage(url: usrlImage)
+        }
+    }
      @objc func setLocate() {
-        let usrlImage = "https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=JdbJa6yZk5MljMzUe9bUO8X8FpHsF02J7UdmHY6hoKs&i&c=55.79109113663435,38.43966736458242&h=400&w=500&r=50"
-        let googleImage = "http://mosregpro.ru/wp-content/gallery/kristall-1old/59039456.jpg"
         
-        self.getImage(url: usrlImage)
-        self.getImageGoogle(url: googleImage)
-    
         guard let latTracking =             NMAPositioningManager.sharedInstance().currentPosition?.coordinates?.latitude,
               let lonTracking = NMAPositioningManager.sharedInstance().currentPosition?.coordinates?.longitude else { return }
         
+        
         self.mapHere.set(geoCenter: NMAGeoCoordinates(latitude: latTracking       , longitude: lonTracking), zoomLevel: 15, orientation: 35, tilt: 0, animation: .none)
+           let googleImage = "https://homenew.su/pic/electrostal/retro/alleya_na_prospekte_lenina_icon.jpg"
+           self.updateMapAR()
+           self.getImageGoogle(url: googleImage)
        
             //   self.findIntersectionOfCircle()
             //   self.trackingTimer()
@@ -872,7 +939,7 @@ extension ViewController {
                 //array.append(array[0])
             }
             if l.positionID == 2 {
-                self.createPolyline(CTR: array, color_AR_line, 6)
+                self.createPolyline(CTR: array, color_AR_line, 6, isShow: true)
             } else if l.positionID == 1 {
                 self.drawPolygonInMap(array,color_F,color_L)
             }
@@ -885,8 +952,8 @@ extension ViewController {
         // MARK init scene
         let color_start = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 0.5)
         let color_view = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        self.createCircle(geoCoord: NMAGeoCoordinates(latitude: 55.790607665738925, longitude:  38.43919700016806), color: color_start, rad: 5)
-        self.createCircle(geoCoord: NMAGeoCoordinates(latitude: 55.790607665738925, longitude:  38.43919700016806), color: color_view, rad: 2)
+        self.createCircle(geoCoord: NMAGeoCoordinates(latitude: 55.79059240191234, longitude:  38.44084188862678), color: color_start, rad: 5)
+        self.createCircle(geoCoord: NMAGeoCoordinates(latitude: 55.79059240191234, longitude:  38.44084188862678), color: color_view, rad: 2)
     }
     @IBAction func changeShema(_ sender: Any){
         self.setLocate()
@@ -916,3 +983,159 @@ extension ViewController {
              bottomSheetVC.view.frame = CGRect(x:  self.view.frame.maxX, y: 0/*self.view.frame.maxY/2*/, width: width/4, height: height)
          }
 }
+extension ViewController : NMANavigationManagerDelegate {
+
+    func navigationManagerWillReroute(_ navigationManager: NMANavigationManager) {
+        
+    }
+
+    func navigationManager(_ navigationManager: NMANavigationManager,
+                           didUpdateRoute routeResult: NMARouteResult) {
+
+        let result = routeResult
+        guard let routes = result.routes, routes.count > 0 else {
+            // The routeResult doesn't contain route for redraw.
+            // It might occur when navigation stop was called.
+            return
+        }
+
+        // Let's add the 1st result onto the map
+        ///route = routes[0]
+        self.updateMapRoute(with: routes.first)
+    }
+
+    func navigationManager(_ navigationManager: NMANavigationManager, didRerouteWithError error: NMARoutingError) {
+        var message : String
+        if error == NMARoutingError.none {
+            message = "successfully"
+        } else {
+            message = "with error \(error)"
+        }
+       // showMessage("Navigation manager finished attempt to route " + message)
+    }
+
+    // Signifies that there is new instruction information available
+    func navigationManager(_ navigationManager: NMANavigationManager,
+                           didUpdateManeuvers currentManeuver: NMAManeuver?,
+                           _ nextManeuver: NMAManeuver?) {
+       // showMessage("New maneuver is available")
+    }
+
+    // Signifies that the system has found a GPS signal
+    func navigationManagerDidFindPosition(_ navigationManager: NMANavigationManager) {
+        //showMessage("New position has been found")
+        print(navigationManager.currentManeuver?.coordinates
+        )
+    }
+    func updateMapRoute(with route: NMARoute?) {
+        // remove previously created map route from map
+        if let previousMapRoute = mapRouteNav {
+            mapHere.remove(mapObject:previousMapRoute)
+        }
+
+        guard let unwrappedRoute = routeNav else {
+            return
+        }
+
+        mapRouteNav = NMAMapRoute(unwrappedRoute)
+        mapRouteNav?.traveledColor = .clear
+        _ = mapRouteNav.map{ mapHere?.add(mapObject: $0) }
+
+        // In order to see the entire route, we orientate the
+        // map view accordingly
+        if let boundingBox = unwrappedRoute.boundingBox {
+            geoBoundingBox = boundingBox
+            mapHere.set(boundingBox: boundingBox, animation: .linear)
+        }
+    }
+
+}
+extension ViewController {
+    // MARK: User actions
+       func add() {
+          navigationManager.stop()
+
+          if !(NMAPositioningManager.sharedInstance().dataSource is NMADevicePositionSource) {
+              NMAPositioningManager.sharedInstance().dataSource = nil
+          }
+
+          // Restore the map orientation to show entire route on screen
+          geoBoundingBox.map{ mapHere.set(boundingBox: $0, animation: .linear) }
+          mapHere.orientation = 0
+          enableMapTracking(false)
+          //navigationControlButton.setTitle("Start Navigation", for: .normal)
+
+          routeNav = nil
+          if mapRouteNav != nil {
+              _ = mapRouteNav.map{ mapHere.remove(mapObject: $0) }
+          }
+          mapRouteNav = nil
+          geoBoundingBox = nil
+      }
+ 
+    private func enableMapTracking(_ enabled: Bool) {
+        navigationManager.mapTrackingAutoZoomEnabled = enabled
+        navigationManager.mapTrackingEnabled = enabled
+    }
+     func startNavigation() {
+          // Display the position indicator on map
+          mapHere.positionIndicator.isVisible = true
+          // Configure NavigationManager to launch navigation on current map
+          navigationManager.map = mapHere
+
+          let alert = UIAlertController(title: "Choose Navigation mode",
+                                        message: "Please choose a mode",
+                                        preferredStyle: .alert)
+
+          //Add Buttons
+
+          let deviceButton = UIAlertAction(title: "Navigation",
+                                           style: .default) { [weak self] _ in
+
+              guard let routeS = self?.routeNav else {
+                  return
+              }
+
+              // Start the turn-by-turn navigation. Please note if the transport mode of the passed-in
+              // route is pedestrian, the NavigationManager automatically triggers the guidance which is
+              // suitable for walking.
+              self?.startTurnByTurnNavigation(with: routeS, useSimulation: false)
+          }
+        let simulateButton = UIAlertAction(title: "Simulation",
+                                                 style: .default) { [weak self] _ in
+
+                  guard let routeN = self?.routeNav else {
+                      return
+                  }
+
+                  self?.startTurnByTurnNavigation(with: routeN, useSimulation: true)
+              }
+        let canceledAction = UIAlertAction(title: "Отменить", style: .cancel) {
+                   (_) -> Void in
+               }
+
+          alert.addAction(deviceButton)
+                alert.addAction(simulateButton)
+        alert.addAction(canceledAction)
+          present(alert, animated: true, completion: nil)
+      }
+    private func startTurnByTurnNavigation(with route: NMARoute, useSimulation: Bool) {
+         if let error = navigationManager.startTurnByTurnNavigation(route) {
+            // showMessage("Error:start navigation returned error code \(error._code)")
+         } else {
+             // Set the map tracking properties
+             enableMapTracking(true)
+            if useSimulation {
+                          // Simulation navigation by init the PositionSource with route and set movement speed
+                          let source = NMARoutePositionSource(route: route)
+                          source.movementSpeed = 10
+                          print(source.currentPosition())
+                          NMAPositioningManager.sharedInstance().dataSource = source
+                      }
+         }
+     }
+}
+
+
+
+

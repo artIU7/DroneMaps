@@ -12,14 +12,19 @@ import SceneKit
 import ARKit
 import NMAKit
 import Foundation
+import Vision
 
-    // MARK variables
-    var manualPosition = NMAGeoCoordinates(latitude: 55.790607665738925, longitude:  38.43919700016806)
+    var arrayNavigate = Navigate()
+    var arrayGPS = [Coordinate]()
+    var arrayAR = [Coordinate]()
+
+    var manualPosition = NMAGeoCoordinates(latitude: 55.79059240191234, longitude:  38.44084188862678)
     var bridge = ViewController()
     var movingNow = false
     var hereLogo = SCNNode()
     var statusMode : String!
     var timeTrackingArPosition = Timer()
+    var timeTrackingEstimate = Timer()
     var currentPosMap : NMAGeoCoordinates?
     var arrayVector = [SCNVector3]()
     var printDiff = [String:[Double]]()
@@ -32,7 +37,17 @@ import Foundation
 
 
 class ARSceneController: UIViewController, ARSCNViewDelegate {
+    
+    var planeId: Int = 0
+    
+    private var timer = Timer()
+
+    let currentMLModel = Inceptionv3().model
+    let serialQueue = DispatchQueue(label: "com.aboveground.dispatchqueueml")
+    var visionRequests = [VNRequest]()
+        // MARK variables
     // log info scene
+    @IBOutlet var infoML: UILabel!
     @IBOutlet var sceneView: ARSCNView!
     @IBOutlet var scenePosition: UILabel!
     @IBOutlet var worldPosition: UILabel!
@@ -58,6 +73,7 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var isDirection: UILabel!
     // uiSwitch
     @IBOutlet weak var startDrawAR: UISwitch!
+    @IBOutlet weak var startEstimate : UISwitch!
     // drone object
     var parrotNode: SCNNode!
     var roterNode: SCNNode!
@@ -65,6 +81,11 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     /// MARK arrow set propertys
     var allowNode : SCNNode!
     var infoNode : SCNNode!
+    var circleNode : SCNNode!
+    var followRoot : SCNNode!
+    var followNode : SCNNode!
+    var followRootGreen : SCNNode!
+    var sceneGeometry : SCNNode!
     //
     var planePoint : CGPoint!
     var groundHeight : CGFloat! = 0.0
@@ -75,23 +96,45 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         sceneView.delegate = self
         planePoint = CGPoint(x: view.center.x, y: view.center.y)
         sceneView.debugOptions = [.showFeaturePoints]
+        configuration.isLightEstimationEnabled = true
+
         // Create a session configuration
         configuration.worldAlignment = .gravityAndHeading
         self.initDetection()
-        // self.loadModels()
-        self.addPlane(content: arImage, place: SCNVector3(10, -5, 0))
-        self.addPlane(content: googleImage, place: SCNVector3(10, 5, 0))
+      //  self.loadStandartGeometry(SCNVector3(x: 0, y: 0, z: 0), name: "Geometry")
+            
+        //self.loadModels()
+   //     self.addPlane(content: arImage, place: SCNVector3(10, -5, 0))
+   //     self.addPlane(content: googleImage, place: SCNVector3(10, 5, 0))
         // self.trackingTimerAR()
         // Set the view's delegate
         // sceneView.delegate = self
         self.initTap()
+            DispatchQueue.main.async {
+                /*self.ringCheck(SCNVector3(0,2,0), name: "test ring 1")
+                self.ringCheck(SCNVector3(0,0,0), name: "test ring 3")
+                self.ringCheck(SCNVector3(0,-2,0), name: "test ring 2")*/
+            }
         //self.addInfo()
         print("running vieDidLoad ============================")
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupCoreML()
+        //startML()
         print("running viewWillAppear ============================")
     }
+    /// ML
+    func startML() {
+         timer.invalidate()
+         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.loopCoreMLUpdate), userInfo: nil, repeats: true)
+    }
+    func stopML() {
+        timer.invalidate()
+    }
+    ///
+    ///
+   
     /// MARK 1 Section IBAction
     // Draw Object in Map's and Scene (ARKit)
     @IBAction func setDirection(_ sender: Any) {
@@ -110,11 +153,17 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         self.BearingValue.text = "\(SliderBearing.value)"
     }
     @IBAction func currPos(_ sender: Any) {
-        self.changeCurrentPosition()
+        manualPosition = arrayARObject.first!
+       // manualPosition = //arrayARObject.first!
+        currentPosMap = manualPosition
+        self.geoPosition.text = "geo pos: - \(manualPosition.latitude) : \(manualPosition.longitude)"
+
+        //self.changeCurrentPosition()
     }
     @IBAction func addButton(_ sender: UIButton) {
         // remove scene
        self.addObjectAR()
+       self.startNavigate()
     }
     @IBAction func CloseARScene(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
@@ -123,7 +172,9 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
    
       // start show object
     @IBAction func startShowARobject(_ sender: Any) {
-        self.addObjectAR()
+        showHide()
+        //self.addObjectAR()
+        //self.startML()
           //self.trackingTimerAR()
           //self.deinitDetection()
     }
@@ -138,21 +189,52 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     }
     @IBAction func startDrawARState (_ sender: Any) {
         if startDrawAR.isOn {
+           
             self.deinitDetection()
+            
+            let pos = getPositionInScene()
+         
             self.trackingTimerARStart()
-        } else {
+            DispatchQueue.main.async {
+               // self.startML()
+            }
+            } else {
             self.trackingTimerARStop()
+            self.initDetection()
         }
     }
-    func addAllow() {
-        let delta = offsetComplete(currentPosMap!, arrayARObject.last!)
-        self.arrowLoadMesh(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1))
+    @IBAction func startEstimateState (_ sender: Any) {
+        if startEstimate.isOn {
+            self.trackingTimerEstimateStart()
+            } else {
+            self.trackingTimerEstimateStop()
+           // self.stopML()
+            }
     }
+    @objc func startNavigate() {
+        arrayGPS.append(Coordinate(lat: getPositionInMap()!.latitude, lon: getPositionInMap()!.longitude))
+        let coordinateCompute = findPointOffset(currentPosMap!,0 - Double(getPositionInScene().z) , 0 + Double(getPositionInScene().x))
+        arrayAR.append(Coordinate(lat: coordinateCompute.latitude, lon: coordinateCompute.longitude))
+    }
+    func addAllow() {
+        if arrayARObject.count > 0 {
+            let delta = offsetComplete(currentPosMap!, arrayARObject.last!)
+                   self.arrowLoadMesh(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1))
+        }
+    }
+    func addFollow(midObject : NMAGeoCoordinates) {
+           let delta = offsetComplete(currentPosMap!, midObject)
+           self.followMeScene(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 - 0.5), name: "Follow")
+       }
     func addInfo(object : NMAGeoCoordinates, name : String) {
         if currentPosMap != nil {
             let delta = offsetComplete(currentPosMap!, object)
-            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1),name: name)
+            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 + 1 ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 + 2),name: name + "" + String(1))
+            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0  ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 + 0),name: name + "" + String(2))
+            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) , 0 - 1 ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 - 2),name: name + "" + String(3))
+
         } else {
+            
             self.changeCurrentPosition()
         }
     }
@@ -162,15 +244,20 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
         // self.updateDrone()
         // self.findhereLogo()
         // self.sofa(position: SCNVector3(0,0, 4))
+
+        self.changeCurrentPosition()
+
         var index = 0
+        var index2 = 0
         // arrayVector.append(SCNVector3(0,-Float(groundHeight),0))
+           var green = #colorLiteral(red: 0.0912076999, green: 0.2924068921, blue: 0.1181608858, alpha: 1)
         if arrayARObject.count > 0 {
             self.reset()
         //  draw
-            arrayVector.append(SCNVector3(0, 0 - Float(groundHeight), 0))
+            //arrayVector.append(SCNVector3(0, 0 - Float(groundHeight), 0))
             for object in arrayARObject {
-             //   painItemAR(object,index)
-                self.addInfo(object : object, name: "tapIndex\(index)")
+                painItemAR(object,index)
+                //self.addFollow(midObject: object)
                 index += 1
             }
             if arrayVector.count > 1 {
@@ -178,14 +265,38 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
                 self.segmentRoute.text = "route seg : \(String(describing: size - 1))"
                 for i in 0...size - 1 {
                 if i != size - 1{
-            //        draw3DLine(arrayVector[i], arrayVector[i+1])
+                    draw3DLine(arrayVector[i], arrayVector[i+1],orderIndex: index, color : green )
                     }
                 }
             }
+            //self.addInfo(object : arrayARObject.last!, name: "test ring")
         }
+        var red = #colorLiteral(red: 0.6872526506, green: 0.1140015829, blue: 0.1115887886, alpha: 1)
+
+        if arrayARObjectYAM.count > 0 {
+                  //self.reset()
+              //  draw
+                  //arrayVector.append(SCNVector3(0, 0 - Float(groundHeight), 0))
+                  for object in arrayARObjectYAM {
+                      painItemAR(object,index2)
+                      //self.addFollow(midObject: object)
+                      index2 += 1
+                  }
+                  if arrayVector.count > 1 {
+                      let size = arrayVector.count
+                      self.segmentRoute.text = "route seg : \(String(describing: size - 1))"
+                      for i in 0...size - 1 {
+                      if i != size - 1{
+                        //draw3DLine(arrayVector[i], arrayVector[i+1],orderIndex: index, color: red)
+                          }
+                      }
+                  }
+                  //self.addInfo(object : arrayARObject.last!, name: "test ring")
+              }
+        
         print(printDiff)
         print(arrayoffset)
-        //self.addAllow()
+        self.addAllow()
 }
     @objc func dragObject(sender: UIPanGestureRecognizer) {
       if(movingNow){
@@ -215,9 +326,26 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
     func trackingTimerARStop() {
         timeTrackingArPosition.invalidate()
     }
+    /// MARK 5 estimate()
+    func trackingTimerEstimateStart() {
+        timeTrackingEstimate.invalidate()
+        timeTrackingEstimate = Timer.scheduledTimer(timeInterval: 1,
+                                                      target: self,
+                                                      selector: #selector(self.startNavigate),
+                                                      userInfo: nil,
+                                                      repeats: true)
+    }
+    func trackingTimerEstimateStop() {
+        timeTrackingEstimate.invalidate()
+        arrayNavigate.id = 1
+        arrayNavigate.pointGPS = arrayGPS
+        arrayNavigate.pointAR = arrayAR
+        print(arrayNavigate)
+    }
 //###
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+  //      stopML()
         trackingTimerARStop()
         // Pause the view's session
         currentPosMap = nil
@@ -242,19 +370,47 @@ class ARSceneController: UIViewController, ARSCNViewDelegate {
             let location: CGPoint = rec.location(in: sceneView)
             let hits = self.sceneView.hitTest(location, options: nil)
             if let tappednode = hits.first?.node {
+                if tappednode.name == "test ring1" {
+                    let p1 = SCNVector3(tappednode.position.x - 2,tappednode.position.y,tappednode.position.z - 1 )
+                    self.addPlane(content: arImage, place: p1)
+                } else
+                if tappednode.name == "test ring2" {
+                    let p2 = SCNVector3(tappednode.position.x,tappednode.position.y,tappednode.position.z - 2 )
+                    self.addPlane(content: octoberImage!, place: p2)
+                } else
+                if tappednode.name == "test ring3" {
+                    let p3 = SCNVector3(tappednode.position.x + 6  ,tappednode.position.y ,tappednode.position.z - 6 )
+                    self.addPlane(content: googleImage, place: p3)
+
+                                    }
                 
-                print("Tap name ++++++++++++++++++++++++++\(tappednode.name)")
-                print(tappednode.position)
+                print("Tap name +++\(tappednode.name)+++")
                 //do something with tapped object
             }
+            //self.addSphereTest(pos: getPositionInScene())
         }
     }
+    private func setupCoreML() {
+        guard let selectedModel = try? VNCoreMLModel(for: currentMLModel) else {
+            fatalError("Could not load model.")
+        }
+        
+        let classificationRequest = VNCoreMLRequest(model: selectedModel,
+                                                    completionHandler: classificationCompleteHandler)
+        classificationRequest.imageCropAndScaleOption = VNImageCropAndScaleOption.centerCrop // Crop from centre of images and scale to appropriate size.
+        visionRequests = [classificationRequest]
+    }
+    @objc private func loopCoreMLUpdate() {
+         serialQueue.async {
+             self.updateCoreML()
+         }
+     }
 }
 
 extension ARSceneController {
     /// MARK 1 Init
     func initDetection() {
-        configuration.planeDetection = .horizontal // vertical detection
+        configuration.planeDetection = [.horizontal,.vertical] // vertical detection
         //sceneView.debugOptions = [.showPhysicsShapes]
         sceneView.session.run(configuration)
     }
@@ -277,6 +433,7 @@ extension ARSceneController {
   /// MARK 4  posInMap
     func getPositionInMap() -> NMAGeoCoordinates! {
         var pos = NMAPositioningManager.sharedInstance().currentPosition
+        if pos != nil {
         let cord = pos?.coordinates
         let lat = cord?.latitude
         let lon = cord?.longitude
@@ -284,10 +441,14 @@ extension ARSceneController {
         let geoPos = NMAGeoCoordinates(latitude: lat!, longitude: lon!, altitude: Float(alt))
         self.geoPosition.text = "geo pos: - \(lat!) : \(lon!)"
         return geoPos
+        }
+       
+        return nil//
     }
  /// MARK 5 updatePositionManual
     func changeCurrentPosition() {
         currentPosMap = getPositionInMap()
+        bridge.updateMapAR()
     }
 }
 
@@ -295,10 +456,12 @@ extension ARSceneController {
 extension ARSceneController {
     
     func painItemAR(_ posDraw : NMAGeoCoordinates?,_ index : Int) {
-            self.changeCurrentPosition()
             let currentPosScene = getPositionInScene()
             if  currentPosMap == nil {
+                manualPosition = arrayARObject.first!
                 currentPosMap = manualPosition//getPositionInMap()
+                self.geoPosition.text = "geo pos: - \(manualPosition.latitude) : \(manualPosition.longitude)"
+
             }
             self.positionInMap.text = "position in map: \(currentPosMap?.latitude) : \(currentPosMap?.longitude)"
             let offsetMeters = bridge.distanceGeo(pointA: currentPosMap!, pointB: posDraw!)
@@ -308,14 +471,38 @@ extension ARSceneController {
             // test compute new coordinate
             // deltaX = offsetMeters*cos(45*Double.pi/180)/(6371000*Double.pi/180)
             // deltaZ=offsetMeters*sin(45*Double.pi/180)/cos(currentPosMap!.latitude*Double.pi/180)/(6371000*Double.pi/180)
-            let sphere = SCNSphere(radius: 0.5)
-            let material = SCNMaterial()
-            material.diffuse.contents = UIImage(named: "way_3d.png")
-            sphere.materials = [material]
-            let node = SCNNode()
-            node.geometry = sphere
+            var node = SCNNode()
+            var scalarLeft = SCNNode()
+            var scalarRight = SCNNode()
             printDiff["\(index)"] = delta
-            node.position = SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) + SliderBearing.value,SliderAltitude.value + 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 + SliderDirection.value)
+            let positionN = SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) + SliderBearing.value,SliderAltitude.value + 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 + SliderDirection.value)
+            var bearing = 5
+            //node.transform = SCNMatrix4Mult(node.transform, SCNMatrix4MakeRotation(Float(bearing), 0.0, 1.0, 0.0))
+            //self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) + SliderBearing.value,SliderAltitude.value + 0 - Float(groundHeight) ,0/*currentPosScene!.z*/ + Float(delta[1]) * -1 + SliderDirection.value), name: "test ring1")
+            let centrColor =  #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+            node = sphere2d(color: centrColor)
+            //node.nodeAnimation(node)
+            
+            node.position = positionN
+            let leftColor =  #colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)
+            scalarLeft = sphere2d(color: leftColor)
+            //scalarLeft.nodeAnimation(scalarLeft)
+            scalarLeft.position = SCNVector3(node.position.x , node.position.y, node.position.z + 3)
+            //scalarLeft.transform = SCNMatrix4Mult(scalarLeft.transform, SCNMatrix4MakeRotation(Float(bearing), 0.0, 1.0, 0.0))
+            if index == arrayARObject.count - 1 {
+            //self.followGreen(SCNVector3(node.position.x , node.position.y, node.position.z + 5), name: "followGreen")
+            }
+            if index % 10 == 0 {
+            self.ringCheck(SCNVector3(0/*currentPosScene!.x*/ + Float(delta[0] ) + SliderBearing.value,SliderAltitude.value + 0 ,1/*currentPosScene!.z*/ + Float(delta[1]) * -1 + SliderDirection.value), name: "test ring1")
+            }
+        
+            let rightColor =  #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+            scalarRight = sphere2d(color: rightColor)
+            //scalarRight.nodeAnimation(scalarRight)
+            scalarRight.position = SCNVector3(node.position.x + 0, node.position.y, node.position.z)
+            var greenpl = #colorLiteral(red: 0.1653840926, green: 0.534415934, blue: 0.2186465091, alpha: 0)
+            self.addPlaneColor(content: greenpl, place: scalarRight.position,isPlot : true)
+        
             arrayVector.append(node.position)
             self.nodePosition.text = "node ims - \(node.position)"
             self.nodePositionWorld.text = "node world - \(node.presentation.worldPosition)"
@@ -328,13 +515,35 @@ extension ARSceneController {
                 node2Pos.z - node1Pos!.z
             )
             let way = distanceNode.length()
-            self.addLabel(SCNVector3(x : node.position.x,y : node.position.y + 5,z :node.position.z),"id : \(index)\n D :\(way) ")
+        if index == 0 {
+             self.addLabel(SCNVector3(x : node.position.x,y : node.position.y + 5,z :node.position.z)," Начало маршрута \(way) ", isCamera: true)
+        }  else if index == arrayARObject.count - 1 {
+                self.addLabel(SCNVector3(x : node.position.x,y : node.position.y + 5,z :node.position.z),"  Финиш \(way) ", isCamera: true)
+        } else if  index % 6 == 0 {
+             self.addLabel(SCNVector3(x : node.position.x,y : node.position.y + 5,z :node.position.z),"  Расстояние \(way) ", isCamera: true)
+        }
+           
+        
             self.offsetInSceneNode.text = "offset node - \(way)"
-            // self.lineAR(node1Pos!,node2Pos)
+            //self.lineAR(node1Pos!,node2Pos)
             node.name = "pointAR"
-            sceneView.scene.rootNode.addChildNode(node)
+         scalarLeft.name = "pointAR"
+         scalarRight.name = "pointAR"
+        
+          sceneView.scene.rootNode.addChildNode(scalarLeft)
+          sceneView.scene.rootNode.addChildNode(scalarRight)
+          sceneView.scene.rootNode.addChildNode(node)
         }
     
+        // dfndsfnsdfs
+    func sphere2d(color : UIColor) -> SCNNode {
+        let sphereNode = SCNNode(geometry: SCNSphere(radius: 0.1))
+          sphereNode.simdPivot.columns.3.x = 5
+          sphereNode.geometry?.firstMaterial?.diffuse.contents = color
+          //sphereNode.rotation = SCNVector4(0, 1, 0, (-CGFloat.pi * (CGFloat(5))/6)/7.5)
+          return sphereNode
+    }
+        
         // func computed offset for new coordinate
         func offsetComplete(_ pointStart : NMAGeoCoordinates, _ pointEnd : NMAGeoCoordinates) -> [Double] {
             let toRadian = Double.pi/180
@@ -388,11 +597,20 @@ extension ARSceneController {
             return NMAGeoCoordinates(latitude: startPoint.latitude + dLat * 180/Double.pi,
                                      longitude: startPoint.longitude + dLon * 180/Double.pi)
     }
+    /*
+    func calculateBearing(to coordinate: NMAGeoCoordinates,from start : NMAGeoCoordinates) -> Double {
+      let toRadian = Double.pi/180
+      let a = sin(coordinate.latitude.toRadian - start.longitude.toRadian) * cos(coordinate.latitude.toRadian)
+      let b = cos(start.lat.toRadian)*sin(coordinate.lat.toRadian)
+      let c = sin(start.lat.toRadian)*cos(coordinate.lat.toRadian)*cos(coordinate.lon.toRadian - start.lon.toRadian)
+     let d = b - c
+      return atan2(a, d)
+    }*/
      // reset
         func reset() {
             //sceneView.session.pause()
             sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
-                if node.name == "pointAR" /*|| node.name == "line" */|| node.name == "labelAR" || node.name == "routeAR" {
+                if node.name == "pointAR" /*|| node.name == "line" */|| node.name == "labelAR" || node.name == "routeAR" || node.name == "allow" || node.name == "test ring1" || node.name == "followGreen" || node.name == "occlusion" {
                 node.removeFromParentNode()
             }}
             self.worldCoordinate.text = "world system : \(statusMode)"
@@ -408,6 +626,21 @@ extension ARSceneController {
             sceneView.debugOptions = [ARSCNDebugOptions.showWorldOrigin,ARSCNDebugOptions.showFeaturePoints,ARSCNDebugOptions.showCameras,ARSCNDebugOptions.showBoundingBoxes]
             sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors]) */
             }
+    func showHide() {
+        sceneView.scene.rootNode.enumerateChildNodes { (node, _) in
+            if node.name ==  "test ring1" {
+                let nodes = node.childNodes.count
+                let node1Pos = getPositionInScene()
+                let node2Pos = node.position
+                 let distanceNode = SCNVector3(
+                        node2Pos.x - node1Pos!.x,
+                        node2Pos.y - node1Pos!.y,
+                        node2Pos.z - node1Pos!.z)
+                if distanceNode.length() < 0.1 {
+                    node.isHidden = true
+                }
+        }}
+    }
 
     class ARSCNArrowGeometry: SCNGeometry {
         convenience init(material: SCNMaterial) {
@@ -433,4 +666,102 @@ extension ARSceneController {
             self.materials = [material]
         }
     }
+}
+
+extension ARSceneController {
+    private func updateCoreML() {
+        let pixbuff : CVPixelBuffer? = (sceneView.session.currentFrame?.capturedImage)
+        if pixbuff == nil { return }
+        
+        let deviceOrientation = UIDevice.current.orientation.getImagePropertyOrientation()
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixbuff!, orientation: deviceOrientation,options: [:])
+        do {
+            try imageRequestHandler.perform(self.visionRequests)
+        } catch {
+            print(error)
+        }
+        
+    }
+}
+extension UIDeviceOrientation {
+    func getImagePropertyOrientation() -> CGImagePropertyOrientation {
+        switch self {
+        case UIDeviceOrientation.portrait, .faceUp: return CGImagePropertyOrientation.right
+        case UIDeviceOrientation.portraitUpsideDown, .faceDown: return CGImagePropertyOrientation.left
+        case UIDeviceOrientation.landscapeLeft: return CGImagePropertyOrientation.up
+        case UIDeviceOrientation.landscapeRight: return CGImagePropertyOrientation.down
+        case UIDeviceOrientation.unknown: return CGImagePropertyOrientation.right
+        }
+    }
+}
+extension ARSceneController {
+    private func classificationCompleteHandler(request: VNRequest, error: Error?) {
+        if error != nil {
+            print("Error: " + (error?.localizedDescription)!)
+            return
+        }
+        guard let observations = request.results else {
+            return
+        }
+        if observations.isEmpty != true {
+            print("type array : \(type(of: observations))")
+                       for observation in observations /* where observation is VNRecognizedObjectObservation */{
+                           guard let objectObservation = observation as? VNClassificationObservation else {
+                  //         print("is Observation None")
+                           continue }
+          //  for observation in observations where observation is VNRecognizedObjectObservation {
+          //  guard let objectObservation = observation as? VNRecognizedObjectObservation else {
+           //     continue
+          //  }
+            // Select only the label with the highest confidence.
+            //let topLabelObservation = objectObservation.labels[0]
+                        let topLabelObservation = objectObservation
+                print("score: \(topLabelObservation.confidence) :: name: \(topLabelObservation.identifier)")
+            self.infoML.text = "\(topLabelObservation.identifier)"
+            if topLabelObservation.confidence > 0.10 && topLabelObservation.identifier == "passenger car" || topLabelObservation.confidence > 0.10 && topLabelObservation.identifier == "car wheel" {
+                //self.stopML()
+                DispatchQueue.main.async {
+                    self.infoML.text = "Внимание автомобиль"
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+                    self.infoML.text = ""
+                    }                    //self.reset()
+                    //self.configuration.worldAlignment = .gravity
+                    //self.initDetection()
+                    //self.ringCheck(SCNVector3(-1.5,0.25,-1), name: "test ring1")
+                    //self.ringCheck(SCNVector3(0,0.25,-1), name: "test ring2")
+                    //self.ringCheck(SCNVector3(1.5,0.25,-1), name: "test ring3")
+                 }
+                }
+                /*
+            DispatchQueue.main.async {
+                let topPrediction = classifications.components(separatedBy: "\n")[0]
+                let topPredictionName = topPrediction.components(separatedBy: ":")[0].trimmingCharacters(in: .whitespaces)
+                guard let topPredictionScore: Float = Float(topPrediction.components(separatedBy: ":")[1].trimmingCharacters(in: .whitespaces)) else { return }
+                
+                if (topPredictionScore > 0.95) {
+                    print("Top prediction: \(topPredictionName) - score: \(String(describing: topPredictionScore))")
+                    
+                }
+            } */
+        }
+    }
+}
+}
+extension SCNNode {
+    
+    static func createPlaneNode(planeAnchor: ARPlaneAnchor, id: Int) -> SCNNode {
+        let scenePlaneGeometry = ARSCNPlaneGeometry(device: MTLCreateSystemDefaultDevice()!)
+        scenePlaneGeometry?.update(from: planeAnchor.geometry)
+        let planeNode = SCNNode(geometry: scenePlaneGeometry)
+        planeNode.name = "\(id)"
+        switch planeAnchor.alignment {
+        case .horizontal:
+            planeNode.geometry?.firstMaterial?.colorBufferWriteMask = .alpha
+        case .vertical:
+            planeNode.geometry?.firstMaterial?.colorBufferWriteMask = .alpha
+            
+        }
+        return planeNode
+    }
+    
 }

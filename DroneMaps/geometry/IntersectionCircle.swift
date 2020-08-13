@@ -45,7 +45,7 @@ extension ViewController {
         //
         self.createCircle(geoCoord: circle1.centr,color: colorPointC1,rad: Int(circle1.radius))
         self.createCircle(geoCoord: circle2.centr,color: colorPointC2,rad: Int(circle2.radius))
-        self.createPolyline(CTR: [circle1.centr,circle2.centr], lineinterc, 2)
+        self.createPolyline(CTR: [circle1.centr,circle2.centr], lineinterc, 2, isShow: true)
         
         self.createCircle(geoCoord: NMAGeoCoordinates(latitude: 55.790822521458686, longitude:  38.43900957613043), color: tempP, rad: 2)
         //

@@ -8,6 +8,8 @@
 
 import UIKit
 import NMAKit
+import YandexMapKit
+
 
     @UIApplicationMain
     class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +24,7 @@ import NMAKit
           )
        func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
            NMAApplicationContext.setAppId(registrationData.appId, appCode: registrationData.appCode, licenseKey: registrationData.licenseKey)
+           YMKMapKit.setApiKey("f6861d84-8cd0-4d45-ab9d-664d65db15e7")
      //   let mainStoryboardIpad : UIStoryboard = UIStoryboard(name: "CustomLaunchScreen", bundle: nil)
      //   let initialViewControlleripad : UIViewController = mainStoryboardIpad.instantiateViewController(withIdentifier: "LaunchScreenViewController") as! LaunchScreenViewController
      //   self.window = UIWindow(frame: UIScreen.main.bounds)

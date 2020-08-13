@@ -11,6 +11,7 @@ import NMAKit
 import CoreTelephony
 import CoreML
 import AVFoundation
+import YandexMapKit
 
 extension ViewController : NMAMapGestureDelegate {
     // add touch in map and draw rote to point
@@ -22,6 +23,9 @@ extension ViewController : NMAMapGestureDelegate {
             let latLocal = mapView.geoCoordinates(from: location)!.latitude
             let lonLocal = mapView.geoCoordinates(from: location)!.longitude
             self.route.append(NMAGeoCoordinates(latitude: latLocal, longitude: lonLocal))
+            //
+            ROUTE_END_POINT = YMKPoint(latitude: latLocal, longitude: lonLocal)
+            //
             //self.zoneObject(id: self.index_placed, geo: NMAGeoCoordinates(latitude: latLocal, longitude: lonLocal,altitude: 1), type: "home-button-for-interface 1.png")
            // print(self.route)
             //mapView.onMapObjectSelected(latLocal, lonLocal)
@@ -30,6 +34,7 @@ extension ViewController : NMAMapGestureDelegate {
         }
             let deleteAction = UIAlertAction(title: "Удалить обьекты", style: .default) { (_) -> Void in
                 let getObject = self.mapHere.objects(at: location)
+               
                 print("get object : \(getObject)")
                 if getObject != [] {
                     print("delete \(getObject)")
@@ -39,9 +44,13 @@ extension ViewController : NMAMapGestureDelegate {
         let canceledAction = UIAlertAction(title: "Отменить", style: .cancel) {
             (_) -> Void in
         }
+            let stopNavigate = UIAlertAction(title: "Завершить навигацию", style: .destructive) {    (_) -> Void in
+                self.navigationManager.stop()
+            }
         alert.addAction(saveAction)
         alert.addAction(canceledAction)
         alert.addAction(deleteAction)
+        alert.addAction(stopNavigate)
         self.present(alert, animated: true, completion: nil)
     } //
         else {
@@ -214,10 +223,10 @@ extension ViewController : NMAMapGestureDelegate {
                  let color_S = #colorLiteral(red: 0, green: 0.6039215686, blue: 0.2666666667, alpha: 1)
                  let color_W = #colorLiteral(red: 0.8901960784, green: 0.4784313725, blue: 0.09019607843, alpha: 1)
                  if bearing == 0 {
-                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_N, 3)} else if bearing == 90 {
-                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_E, 3)} else if bearing == 180 {
-                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_S, 3)} else if bearing == 270 {
-                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_W, 3)}
+                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_N, 3,isShow: true)} else if bearing == 90 {
+                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_E, 3,isShow: true)} else if bearing == 180 {
+                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_S, 3, isShow: true)} else if bearing == 270 {
+                    self.createPolyline(CTR: stripBearing as! [NMAGeoCoordinates], color_W, 3, isShow: true)}
             }
             let pointSecond = self.firstGeoTask(getCoordinate!, radius + 10, 45)
             self.createCircle(geoCoord: pointSecond,color: colorPoint_other,rad: Int(1))

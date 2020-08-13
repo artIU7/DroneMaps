@@ -22,20 +22,29 @@ class Plane: SCNNode{
     ///   - content: Any (UIColor Or UIImage)
     ///   - doubleSided: Bool
     ///   - horizontal: The Alignment Of The Plane
-    init(width: CGFloat = 6, height: CGFloat = 4, content: Any, doubleSided: Bool, horizontal: Bool) {
+    init(width: CGFloat = 3, height: CGFloat = 2, content: Any, doubleSided: Bool, horizontal: Bool, plot : Bool) {
         
         super.init()
         
         //1. Create The Plane Geometry With Our Width & Height Parameters
-        self.geometry = SCNPlane(width: width, height: height)
+        if plot == true {
+            self.geometry = SCNPlane(width: width + 2, height: height + 1)
+
+        } else {
+            self.geometry = SCNPlane(width: width - 2, height: height - 1)
+        }
         
         //2. Create A New Material
         let material = SCNMaterial()
         
         if let colour = content as? UIColor{
             
+   
+
+            
+        material.diffuse.contents = colour
+            
              //The Material Will Be A UIColor
-             material.diffuse.contents = colour
             
         }else if let image = content as? UIImage{
             
@@ -48,9 +57,12 @@ class Plane: SCNNode{
             material.diffuse.contents = UIColor.cyan
             
         }
-
+        if plot == true {
+            self.geometry?.firstMaterial?.colorBufferWriteMask = .alpha
+        } else {
+            self.geometry?.firstMaterial = material
+        }
         //3. Set The 1st Material Of The Plane
-        self.geometry?.firstMaterial = material
         
         //4. If We Want Our Material To Be Applied On Both Sides The Set The Property To True
         if doubleSided{
@@ -60,8 +72,8 @@ class Plane: SCNNode{
         //5. By Default An SCNPlane Is Rendered Vertically So If We Need It Horizontal We Need To Rotate It
         if horizontal{
             self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(Float(Double.pi), 1, 0, 1))
-            self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(Float(Double.pi)/1.0, 0, 0, 1))
-            
+            self.transform = SCNMatrix4Mult(self.transform, SCNMatrix4MakeRotation(-Float(Double.pi)/1.0, 1, 0, 1))
+   
             //SCNMatrix4MakeRotation(0, 1, 3, 0)
         }
         
@@ -71,7 +83,7 @@ class Plane: SCNNode{
 // MARK additional helper draw 3d line class
 class MeasuringLineNode: SCNNode{
 
-init(startingVector vectorA: GLKVector3, endingVector vectorB: GLKVector3) {
+    init(startingVector vectorA: GLKVector3, endingVector vectorB: GLKVector3, color : UIColor) {
     super.init()
 
     //1. Create The Height Our Box Which Is The Distance Between Our 2 Vectors
@@ -91,7 +103,7 @@ init(startingVector vectorA: GLKVector3, endingVector vectorB: GLKVector3) {
     //5. Create An SCNCyclinder Geometry To Act As Our Line
     let cylinder = SCNCylinder(radius: 0.5, height: height)
     let material = SCNMaterial()
-    let color_route = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+    let color_route = color
     material.diffuse.contents = color_route//UIColor.white
     /*cylinder.materials = [material]
     cylinder.firstMaterial?.diffuse.contents = UIColor.white
@@ -114,7 +126,8 @@ init(startingVector vectorA: GLKVector3, endingVector vectorB: GLKVector3) {
     let nodeLine = SCNNode(geometry: box)
     nodeLine.position.y = Float(-height/2)
     nodeZAlign.addChildNode(nodeLine)
-
+        nodeZAlign.name = "route AR"
+    nodeZAlign.renderingOrder = 10
     self.addChildNode(nodeZAlign)
 
     //7. Force The Node To Look At Our End Vector
@@ -147,7 +160,7 @@ extension ARSceneController {
           func addPlane(content : UIImage, place : SCNVector3){
            //1. Create Our Plane Node
            //let color = #colorLiteral(red: 0.6549019608, green: 0.6638626321, blue: 0.9686274529, alpha: 0.65)
-                let plane = Plane(content : content, doubleSided: true, horizontal: true)
+            let plane = Plane(content : content, doubleSided: true, horizontal: true, plot: false)
            
            //2. Set It's Position 1.5m Away From The Camera
                 plane.position = place//SCNVector3(10, 0, 0)
@@ -156,14 +169,29 @@ extension ARSceneController {
                 self.sceneView.scene.rootNode.addChildNode(plane)
            
        }
-    func draw3DLine(_ nodeA : SCNVector3, _ nodeB : SCNVector3) {
+    func addPlaneColor(content : UIColor, place : SCNVector3, isPlot : Bool){
+             //1. Create Our Plane Node
+             //let color = #colorLiteral(red: 0.6549019608, green: 0.6638626321, blue: 0.9686274529, alpha: 0.65)
+        let plane = Plane(content : content, doubleSided: true, horizontal: true, plot : true)
+             //2. Set It's Position 1.5m Away From The Camera
+                  plane.position = place//SCNVector3(10, 0, 0)
+                  plane.name = "occlusion"
+             //3. Add Our Plane To Our ARSCNView
+                  self.sceneView.scene.rootNode.addChildNode(plane)
+             
+         }
+    func draw3DLine(_ nodeA : SCNVector3, _ nodeB : SCNVector3, orderIndex : Int, color : UIColor) {
           //1. Convert The Nodes SCNVector3 to GLVector3
+          //SCNTransaction.animationDuration = 1.0
+
           let nodeAVector3 = GLKVector3Make(nodeA.x, nodeA.y, nodeA.z)
           let nodeBVector3 = GLKVector3Make(nodeB.x, nodeB.y, nodeB.z)
 
           //2. Draw A Line Between The Nodes
-          let line = MeasuringLineNode(startingVector: nodeAVector3 , endingVector: nodeBVector3)
+        let line = MeasuringLineNode(startingVector: nodeAVector3 , endingVector: nodeBVector3, color: color)
           line.name = "routeAR"
+          line.renderingOrder = 10 //+ orderIndex//orderIndex
+        //  line.opacity = 0
           //line.nodeAnimation(line)
           self.sceneView.scene.rootNode.addChildNode(line)
     }

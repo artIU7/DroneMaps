@@ -40,32 +40,67 @@ extension ARSceneController {
     // MARK render ovveride
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         DispatchQueue.main.async {
+            
             //self.statusLabel.text = self.trackingStatus
             print("render(:updateAtTime)")
           //  self.updateStatus()
+            let center = self.sceneView.center
+
+            DispatchQueue.global(qos: .userInitiated).async {
+                if #available(iOS 13.0, *) {
+                    if let query = self.sceneView.raycastQuery(from: center, allowing: .estimatedPlane, alignment: .any) {
+                        let results = self.sceneView.session.raycast(query)
+                        print("object \(results)")
+                    }
+                    else {
+                        // sometimes it gets here
+                    }
+                    self.makeUpdateCameraPos(towards: SCNVector3(0,0,0))
+            }
             self.updateFocusNode()
         }
     }
-/*    //
+}
+    func makeUpdateCameraPos(towards: SCNVector3) {
+          guard let scene = self.sceneView else { return }
+      }
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
+        /*DispatchQueue.main.async {
+             print(planeAnchor.center)
+            if node.renderingOrder < 2 {
+                node.isHidden = true
+            }
+             print("update anchor")
+        }*/
+             node.enumerateChildNodes { child, _ in
+                 child.removeFromParentNode()
+             }
+             let planeNode = SCNNode.createPlaneNode(planeAnchor: planeAnchor, id: self.planeId)
+             self.planeId += 1
+             node.addChildNode(planeNode)
+    }
+
+   //
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
                guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
                print("plane Anchor: \(planeAnchor)")
-               DispatchQueue.main.async {
+               /*DispatchQueue.main.async {
                    print("add Plane")
-               }
+               }*/
+                let planeNode = SCNNode.createPlaneNode(planeAnchor: planeAnchor, id: planeId)
+                planeId += 1
+                node.addChildNode(planeNode)
            }
     //
-           func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-               guard let planeAnchor = anchor as? ARPlaneAnchor else {return}
-               DispatchQueue.main.async {
-                    print("update anchor")
-               }
-           }
     //
        func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
            guard anchor is ARPlaneAnchor else { return }
-           DispatchQueue.main.async {
-               print("remove anchor")
-           }
-       } */
+           /*DispatchQueue.main.async {
+                print("remove anchor")
+           }*/
+            node.enumerateChildNodes { child, _ in
+                child.removeFromParentNode()
+            }
+        }
 }

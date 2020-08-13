@@ -1,16 +1,48 @@
 PODS:
-  - HEREMaps (3.15.2)
+  - HEREMaps (3.16.2)
+  - YandexMapKit (3.5.0):
+    - YandexRuntime (= 3.5.0)
+  - YandexMapKitDirections (3.5.0):
+    - YandexMapKit (= 3.5.0)
+    - YandexRuntime (= 3.5.0)
+  - YandexMapKitPlaces (3.5.0):
+    - YandexMapKit (= 3.5.0)
+    - YandexRuntime (= 3.5.0)
+  - YandexMapKitSearch (3.5.0):
+    - YandexMapKit (= 3.5.0)
+    - YandexRuntime (= 3.5.0)
+  - YandexMapKitTransport (3.5.0):
+    - YandexMapKit (= 3.5.0)
+    - YandexRuntime (= 3.5.0)
+  - YandexRuntime (3.5.0)
 
 DEPENDENCIES:
   - HEREMaps
+  - YandexMapKit (~> 3.5.0)
+  - YandexMapKitDirections (~> 3.5.0)
+  - YandexMapKitPlaces (~> 3.5.0)
+  - YandexMapKitSearch (~> 3.5.0)
+  - YandexMapKitTransport (~> 3.5.0)
 
 SPEC REPOS:
   trunk:
     - HEREMaps
+    - YandexMapKit
+    - YandexMapKitDirections
+    - YandexMapKitPlaces
+    - YandexMapKitSearch
+    - YandexMapKitTransport
+    - YandexRuntime
 
 SPEC CHECKSUMS:
-  HEREMaps: 0e1521a67599524afea52af7a7e1c082cc073dbb
+  HEREMaps: 14b7804cc59553a67a00fb2e710d028d8c692d29
+  YandexMapKit: ecd4b78de34a35df63d066ac299e6fd0fe46d1ba
+  YandexMapKitDirections: 4298725d34df043ec127dd6e76f457e24f378188
+  YandexMapKitPlaces: 6bc38c5e6fa34870a3c718a0b7921bf159cae7ee
+  YandexMapKitSearch: b46ddd1c80e2e35d006cdfc4ab88070a50cebeda
+  YandexMapKitTransport: 52f64fdc16bc83f8849b47e4143a698b6be24c49
+  YandexRuntime: 2d55244d06267106cf9b00c25a1e63f72a73b6fd
 
-PODFILE CHECKSUM: d60e7410900737551d5e74d2b2cd9803d392139e
+PODFILE CHECKSUM: 172905d579e1852b56af527c6d40fd10ee591abe
 
 COCOAPODS: 1.9.3

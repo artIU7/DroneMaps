@@ -13,6 +13,7 @@ var users = [User]()
 var ctr = [area]()
 var arImage = UIImage()
 var googleImage = UIImage()
+var octoberImage = UIImage(named: "october.png")
 //https://image.maps.ls.hereapi.com/mia/1.6/mapview?apiKey=JdbJa6yZk5MljMzUe9bUO8X8FpHsF02J7UdmHY6hoKs&i&c=55.79109113663435,38.43966736458242&h=400&w=500&r=50
 extension ViewController {
     // post
